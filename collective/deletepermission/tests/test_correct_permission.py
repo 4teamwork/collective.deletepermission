@@ -59,3 +59,11 @@ class TestCorrectPermissions(TestCase):
     def test_userb_remove_doc_b(self):
         login(self.portal, 'userb')
         self.folder_a.manage_delObjects('doc-b')
+
+    def test_remove_multiple(self):
+        login(self.portal, 'usera')
+        self.folder_a.manage_delObjects(['doc-a','doc-b'])
+
+    def test_remove_empty(self):
+        login(self.portal, 'usera')
+        self.folder_a.manage_delObjects(None)

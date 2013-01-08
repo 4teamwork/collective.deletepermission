@@ -4,7 +4,8 @@ from plone.app.testing import PLONE_FIXTURE
 from plone.app.testing import PloneSandboxLayer
 from plone.app.testing import setRoles, TEST_USER_ID, TEST_USER_NAME, login
 from zope.configuration import xmlconfig
-
+from plone.app.testing import applyProfile
+from plone.testing import z2
 
 class CollectiveDeletepermissionLayer(PloneSandboxLayer):
 
@@ -22,7 +23,7 @@ class CollectiveDeletepermissionLayer(PloneSandboxLayer):
 
     def setUpPloneSite(self, portal):
         # Install into Plone site using portal_setup
-
+        applyProfile(portal, 'collective.deletepermission:default')
         setRoles(portal, TEST_USER_ID, ['Manager', 'Contributor'])
         login(portal, TEST_USER_NAME)
 

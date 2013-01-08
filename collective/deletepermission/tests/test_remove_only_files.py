@@ -25,7 +25,7 @@ class TestOnlyFiles(TestCase):
 
         # create structure
         self.folder = self.portal.get(self.portal.invokeFactory('Folder', 'rootfolder'))
-        self.folder.manage_addLocalRoles('usera', ['Contributor','Editor'])
+        self.folder.manage_addLocalRoles('usera', ['Contributor'])
         self.subfolder = self.folder.get(self.folder.invokeFactory('Folder', 'subfolder'))
         logout()
 
@@ -65,5 +65,5 @@ class TestOnlyFiles(TestCase):
         self.browser.addHeader('Authorization', 'Basic %s:%s' % (
             'usera', 'usera',))
 
-        self.browser.open(self.portal.absolute_url()+'/rootfolder/delete_confirmation')
+        self.browser.open(self.portal.absolute_url()+'/rootfolder/subfolder/delete_confirmation')
         self.assertRaises(Unauthorized, self.browser.getControl("Delete").click)
