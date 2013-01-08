@@ -14,7 +14,7 @@
       description="Patch manage_delObjects"
       class="Products.Archetypes.BaseFolder.BaseFolderMixin"
       original="manage_delObjects"
-      replacement="collective.deletepermission.del_object.patched_delObject"
+      replacement="collective.deletepermission.del_object.manage_delObjects"
       />
 
   <genericsetup:registerProfile

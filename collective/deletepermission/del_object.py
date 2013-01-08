@@ -3,7 +3,7 @@ from AccessControl import Unauthorized
 from AccessControl import getSecurityManager
 
 
-def patched_delObject(self, ids=None, REQUEST=None):
+def manage_delObjects(self, ids=None, REQUEST=None):
     """We need to enforce security."""
     if ids is None:
         ids = []
