@@ -1,0 +1,60 @@
+collective.deletepermission
+===========================
+
+This package monkeypatches the Archetypes manage_delObject and checks for a new permission called ``Delete portal content``.
+The ``Delete portal content`` permission is now required on the object you want to delete. On parent objects the ``Delete objects`` permission still is required.
+This gives us some more flexibility and makes it for instance possible for a contributor to delete his own content but nothing else.
+In the graph below I will show the situation with the default settings and if it is deletable by Contributor1.
+
+- Rootfolder of Admin (not deletable)
+
+  - Document of Contributor1 (deletable)
+
+  - Subfolder of Admin (not deletable)
+
+    - Document of Contributor1 (deletable)
+
+    - Document of Contrubutor2 (not deletable)
+
+In default Plone this would look like this:
+
+- Rootfolder of Admin (not deletable)
+
+  - Document of Contributor1 (deletable)
+
+  - Subfolder of Admin (deletable)
+
+    - Document of Contributor1 (deletable)
+
+    - Document of Contrubutor2 (deletable)
+
+This is caused by the fact that in default Plone we require the same permission on the parent and the object. If we have two levels where we should be able to delete some files, we always end up with the user beeing able to delete the container of the second level.
+
+Usage
+-----
+
+- Add ``collective.deletepermission`` to your buildout configuration:
+
+::
+
+    [instance]
+    eggs +=
+        collective.deletepermission
+
+- Install the generic import profile.
+
+Links
+-----
+
+- Main github project repository: https://github.com/4teamwork/collective.deletepermission
+- Issue tracker: https://github.com/4teamwork/collective.deletepermission/issues
+- Package on pypi: http://pypi.python.org/pypi/collective.deletepermission
+- Continuous integration: https://jenkins.4teamwork.ch/search?q=collective.deletepermission
+
+
+Copyright
+---------
+
+This package is copyright by `4teamwork <http://www.4teamwork.ch/>`_.
+
+``collective.deletepermission`` is licensed under GNU General Public License, version 2.
