@@ -2,6 +2,7 @@ from Products.CMFCore.PortalFolder import PortalFolderBase as PortalFolder
 from AccessControl import Unauthorized
 from AccessControl import getSecurityManager
 
+
 def patched_delObject(self, ids=None, REQUEST=None):
     """We need to enforce security."""
     if ids is None:
@@ -12,6 +13,6 @@ def patched_delObject(self, ids=None, REQUEST=None):
         item = self._getOb(id)
         sm = getSecurityManager()
         if not sm.checkPermission("Delete portal content", item):
-            raise Unauthorized, (
+            raise Unauthorized(
                 "Do not have permissions to remove this object")
     return PortalFolder.manage_delObjects(self, ids, REQUEST=REQUEST)
