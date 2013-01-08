@@ -10,6 +10,10 @@ tests_require = [
     'plone.testing',
     'transaction',
     'zope.configuration',
+    'AccessControl',
+    'Products.CMFCore',
+    'Products.GenericSetup',
+    'plone.app.portlets',
     ]
 
 
@@ -21,12 +25,12 @@ extras_require = {
 long_description = (
     open('README.rst').read()
     + '\n' +
-    open('docs/HISTORY.txt').read()
+    open(os.path.join('docs', 'HISTORY.txt')).read()
     + '\n')
 
 setup(name='collective.deletepermission',
       version=version,
-      description="Provides a new Delete permission with customized Scripts which doesn't require to get delete objects on the parent.",
+      description="This package monkeypatches the Archetypes manage_delObject and checks for a new permission called ``Delete portal content``",
       long_description=long_description,
 
       # Get more strings from
@@ -40,7 +44,7 @@ setup(name='collective.deletepermission',
         'Topic :: Software Development :: Libraries :: Python Modules',
         ],
 
-      keywords='',
+      keywords='collective deletepermission 4teamwork ftw plone',
       author='4teamwork GmbH',
       author_email='mailto:info@4teamwork.ch',
       maintainer=maintainer,
@@ -54,10 +58,10 @@ setup(name='collective.deletepermission',
 
       install_requires=[
           'setuptools',
-          'Zope2',
-          'Products.CMFPlone',
+          'AccessControl',
+          'Products.CMFCore',
           'Products.Archetypes',
-	  'collective.monkeypatcher',
+          'collective.monkeypatcher',
           # -*- Extra requirements: -*-
       ],
 
