@@ -107,6 +107,7 @@ class TestCorrectPermissions(TestCase):
         self.assertRaises(Unauthorized, self.browser.getControl("Delete").click)
 
     def test_usera_remove_docs_folder_contents(self):
+        """Check if we are able to remove files over folder_contents."""
         self.browser.addHeader('Authorization', 'Basic %s:%s' % (
             'usera', 'usera',))
 
@@ -117,6 +118,7 @@ class TestCorrectPermissions(TestCase):
         self.assertIn('<dd>Item(s) deleted.</dd>', self.browser.contents)
 
     def test_userb_remove_docs_folder_contents(self):
+        """Check if the permission also works when we delete over folder_contents."""
         self.browser.addHeader('Authorization', 'Basic %s:%s' % (
             'userb', 'userb',))
 

@@ -39,9 +39,7 @@ class TestOnlyFiles(TestCase):
         self.browser.handleErrors = False
 
     def test_delete_secondlevel(self):
-        """
-        Test if we are able to delete the file in the subfolder
-        """
+        """Test if we are able to delete the file in the subfolder"""
         self.browser.addHeader('Authorization', 'Basic %s:%s' % (
             'usera', 'usera',))
 
@@ -49,9 +47,7 @@ class TestOnlyFiles(TestCase):
         self.browser.getControl("Delete").click()
 
     def test_delete_firstlevel(self):
-        """
-        Test if we are able to delete the file in the rootfolder
-        """
+        """Test if we are able to delete the file in the rootfolder"""
         self.browser.addHeader('Authorization', 'Basic %s:%s' % (
             'usera', 'usera',))
 
@@ -59,9 +55,7 @@ class TestOnlyFiles(TestCase):
         self.browser.getControl("Delete").click()
 
     def test_delete_subfolder(self):
-        """
-        Test if we can delete the subfolder. This should not be the case.
-        """
+        """Test if we can delete the subfolder. This should not be the case."""
         self.browser.addHeader('Authorization', 'Basic %s:%s' % (
             'usera', 'usera',))
 
