@@ -57,7 +57,7 @@ setup(name='collective.deletepermission',
           'Zope2',
           'Products.CMFPlone',
           'Products.Archetypes',
-
+	  'collective.monkeypatcher',
           # -*- Extra requirements: -*-
       ],
 
