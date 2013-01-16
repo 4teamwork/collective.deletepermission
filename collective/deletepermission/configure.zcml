@@ -17,6 +17,13 @@
       replacement="collective.deletepermission.del_object.manage_delObjects"
       />
 
+  <monkey:patch
+      description="Patch cb_userHasCopyOrMovePermissions"
+      class="OFS.CopySupport.CopySource"
+      original="cb_userHasCopyOrMovePermission"
+      replacement="collective.deletepermission.cut_object.cb_userHasCopyOrMovePermission"
+      />
+
   <genericsetup:registerProfile
       name="default"
       title="collective.deletepermission"
