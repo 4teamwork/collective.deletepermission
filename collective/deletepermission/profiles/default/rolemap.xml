@@ -6,8 +6,12 @@
             <role name="Owner" />
             <role name="Editor" />
         </permission>
+        <!-- Add Contributor -->
         <permission name="Delete objects" acquire="True">
           <role name="Contributor" />
+          <role name="Site Administrator" />
+          <role name="Manager" />
+          <role name="Editor" />
         </permission>
     </permissions>
 </rolemap>
