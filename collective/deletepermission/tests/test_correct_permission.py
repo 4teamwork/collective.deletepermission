@@ -25,20 +25,24 @@ class TestCorrectPermissions(TestCase):
                                       'fullname': 'f\xc3\xbcllnameb',
                                       'email': 'userb@email.com'})
         #create structure
-        self.folder = self.portal.get(self.portal.invokeFactory('Folder', 'rootfolder'))
+        self.folder = self.portal.get(
+            self.portal.invokeFactory('Folder', 'rootfolder'))
         self.folder.manage_addLocalRoles('usera', ['Contributor'])
         self.folder.manage_addLocalRoles('userb', ['Contributor'])
         logout()
 
         login(self.portal, 'usera')
         #create a folder and a document as usera
-        self.folder_a = self.folder.get(self.folder.invokeFactory('Folder', 'folder-a'))
-        self.doc_a = self.folder_a.get(self.folder_a.invokeFactory('Document', 'doc-a'))
+        self.folder_a = self.folder.get(
+            self.folder.invokeFactory('Folder', 'folder-a'))
+        self.doc_a = self.folder_a.get(
+            self.folder_a.invokeFactory('Document', 'doc-a'))
         logout()
 
         #create a doc as userb
         login(self.portal, 'userb')
-        self.doc_b = self.folder_a.get(self.folder_a.invokeFactory('Document', 'doc-b'))
+        self.doc_b = self.folder_a.get(
+            self.folder_a.invokeFactory('Document', 'doc-b'))
         logout()
 
     def test_usera_remove_folder(self):
@@ -49,7 +53,9 @@ class TestCorrectPermissions(TestCase):
     def test_userb_remove_folder(self):
         """Test if userb can't delete usera's folder"""
         login(self.portal, 'userb')
-        self.assertRaises(Unauthorized, self.folder.manage_delObjects, 'folder-a')
+        self.assertRaises(Unauthorized,
+                          self.folder.manage_delObjects,
+                          'folder-a')
 
     def test_usera_remove_doc_a(self):
         """Test if usera can remove his doc"""
@@ -64,7 +70,9 @@ class TestCorrectPermissions(TestCase):
     def test_userb_remove_doc_a(self):
         """Test if userb can remove usera's folder"""
         login(self.portal, 'userb')
-        self.assertRaises(Unauthorized, self.folder_a.manage_delObjects, 'doc-a')
+        self.assertRaises(Unauthorized,
+                          self.folder_a.manage_delObjects,
+                          'doc-a')
 
     def test_userb_remove_doc_b(self):
         """Test if userb can remove his doc"""
@@ -74,7 +82,7 @@ class TestCorrectPermissions(TestCase):
     def test_remove_multiple(self):
         """Test if we still are able to remove multiple objects at once."""
         login(self.portal, 'usera')
-        self.folder_a.manage_delObjects(['doc-a','doc-b'])
+        self.folder_a.manage_delObjects(['doc-a', 'doc-b'])
         self.assertEqual(self.folder_a.objectIds(), [])
 
     def test_remove_empty(self):

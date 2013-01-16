@@ -24,15 +24,20 @@ class TestOnlyFiles(TestCase):
                                       'email': 'usera@email.com'})
 
         # create structure
-        self.folder = self.portal.get(self.portal.invokeFactory('Folder', 'rootfolder'))
+        self.folder = self.portal.get(
+            self.portal.invokeFactory('Folder', 'rootfolder'))
         self.folder.manage_addLocalRoles('usera', ['Contributor'])
-        self.subfolder = self.folder.get(self.folder.invokeFactory('Folder', 'subfolder'))
+        self.subfolder = self.folder.get(
+            self.folder.invokeFactory('Folder', 'subfolder'))
         logout()
 
-        #login as user and create some docs. We need to change user so the owner is set right
+        # Login as user and create some docs. We need to change user so the
+        # owner is set right
         login(self.portal, 'usera')
-        self.firstleveldoc = self.folder.get(self.folder.invokeFactory('Document', 'doc-firstlevel'))
-        self.secondleveldoc = self.subfolder.get(self.subfolder.invokeFactory('Document', 'doc-secondlevel'))
+        self.firstleveldoc = self.folder.get(
+            self.folder.invokeFactory('Document', 'doc-firstlevel'))
+        self.secondleveldoc = self.subfolder.get(
+            self.subfolder.invokeFactory('Document', 'doc-secondlevel'))
         transaction.commit()
 
         self.browser = Browser(self.layer['app'])
@@ -43,7 +48,9 @@ class TestOnlyFiles(TestCase):
         self.browser.addHeader('Authorization', 'Basic %s:%s' % (
             'usera', 'usera',))
 
-        self.browser.open(self.portal.absolute_url()+'/rootfolder/subfolder/doc-secondlevel/delete_confirmation')
+        self.browser.open(
+            self.portal.absolute_url() + '/rootfolder/subfolder/doc-secondleve'
+                                         'l/delete_confirmation')
         self.browser.getControl("Delete").click()
 
     def test_delete_firstlevel(self):
@@ -51,7 +58,9 @@ class TestOnlyFiles(TestCase):
         self.browser.addHeader('Authorization', 'Basic %s:%s' % (
             'usera', 'usera',))
 
-        self.browser.open(self.portal.absolute_url()+'/rootfolder/doc-firstlevel/delete_confirmation')
+        self.browser.open(
+            self.portal.absolute_url() + '/rootfolder/doc-firstlevel/delete_'
+                                         'confirmation')
         self.browser.getControl("Delete").click()
 
     def test_delete_subfolder(self):
@@ -59,5 +68,8 @@ class TestOnlyFiles(TestCase):
         self.browser.addHeader('Authorization', 'Basic %s:%s' % (
             'usera', 'usera',))
 
-        self.browser.open(self.portal.absolute_url()+'/rootfolder/subfolder/delete_confirmation')
-        self.assertRaises(Unauthorized, self.browser.getControl("Delete").click)
+        self.browser.open(
+            self.portal.absolute_url() + '/rootfolder/subfolder/delete_'
+                                         'confirmation')
+        self.assertRaises(Unauthorized,
+                          self.browser.getControl("Delete").click)
