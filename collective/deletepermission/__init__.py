@@ -1,0 +1,1 @@
+import cut_object
