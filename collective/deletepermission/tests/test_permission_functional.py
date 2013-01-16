@@ -7,6 +7,7 @@ from plone.app.testing import logout
 import transaction
 from plone.testing.z2 import Browser
 from AccessControl import Unauthorized
+from mechanize._mechanize import LinkNotFoundError
 
 
 class TestCorrectPermissions(TestCase):
@@ -70,6 +71,19 @@ class TestCorrectPermissions(TestCase):
             self.folder_a.absolute_url() + '/doc-b/delete_confirmation')
         self.browser.getControl("Delete").click()
 
+    def test_userb_cut_docb(self):
+        """
+        Check if User B is able to cut his own document.
+        """
+        self._auth_b()
+
+        self.browser.open(
+            self.folder_a.absolute_url() + '/doc-b')
+        link = self.browser.getLink(id="plone-contentmenu-actions-cut")
+        self.assertTrue(link)
+
+        link.click()
+
     def test_usera_remove_folder(self):
         """
         Test if User A is able to delete his folder
@@ -79,6 +93,18 @@ class TestCorrectPermissions(TestCase):
         self.browser.open(
             self.folder_a.absolute_url() + '/delete_confirmation')
         self.browser.getControl("Delete").click()
+
+    def test_usera_cut_folder(self):
+        """
+        Test if User A is able to cut his folder
+        """
+        self._auth_a()
+
+        self.browser.open(self.folder_a.absolute_url())
+        link = self.browser.getLink(id='plone-contentmenu-actions-cut')
+
+        self.assertTrue(link)
+        link.click()
 
     def test_userb_remove_folder(self):
         """
@@ -91,6 +117,19 @@ class TestCorrectPermissions(TestCase):
         self.assertRaises(Unauthorized,
                           self.browser.getControl("Delete").click)
 
+    def test_userb_cut_folder(self):
+        """
+        Check if User B can't cut User A's folder.
+        """
+        self._auth_b()
+        self.browser.open(self.folder_a.absolute_url())
+
+        self.assertRaises(LinkNotFoundError, self.browser.getLink,
+                         'plone-contentmenu-actions-cut')
+
+        self.assertRaises(Unauthorized,
+                          self.folder_a.restrictedTraverse('object_cut'))
+
     def test_usera_remove_doc_a(self):
         """
         Test if User A is able to delete his own Document.
@@ -101,6 +140,18 @@ class TestCorrectPermissions(TestCase):
             self.folder_a.absolute_url() + '/doc-a/delete_confirmation')
         self.browser.getControl("Delete").click()
 
+    def test_usera_cut_doc_a(self):
+        """
+        Test if User A is able to cut his own Document.
+        """
+        self._auth_a()
+
+        self.browser.open(self.doc_a.absolute_url())
+        link = self.browser.getLink(id='plone-contentmenu-actions-cut')
+
+        self.assertTrue(link)
+        link.click()
+
     def test_usera_remove_doc_b(self):
         """
         Test if User A is able to delete the Document of User B
@@ -110,6 +161,18 @@ class TestCorrectPermissions(TestCase):
         self.browser.open(
             self.folder_a.absolute_url() + '/doc-b/delete_confirmation')
         self.browser.getControl("Delete").click()
+
+    def test_usera_cut_doc_b(self):
+        """
+        Test if User A is able to cut the Document of User B
+        """
+        self._auth_a()
+
+        self.browser.open(self.doc_b.absolute_url())
+        link = self.browser.getLink(id='plone-contentmenu-actions-cut')
+
+        self.assertTrue(link)
+        link.click()
 
     def test_userb_remove_doc_a(self):
         """
@@ -122,6 +185,20 @@ class TestCorrectPermissions(TestCase):
         self.assertRaises(Unauthorized,
                           self.browser.getControl("Delete").click)
 
+    def test_userb_cut_doc_a(self):
+        """
+        Check if User B can't remove User A's Document.
+        """
+        self._auth_b()
+
+        self.browser.open(self.doc_a.absolute_url())
+
+        self.assertRaises(LinkNotFoundError, self.browser.getLink,
+                         'plone-contentmenu-actions-cut')
+
+        self.assertRaises(Unauthorized,
+                          self.folder_a.restrictedTraverse('object_cut'))
+
     def test_usera_remove_docs_folder_contents(self):
         """Check if we are able to remove files over folder_contents."""
         self._auth_a()
@@ -132,6 +209,18 @@ class TestCorrectPermissions(TestCase):
         self.browser.getControl("doc-b").selected = True
         self.browser.getControl(name="folder_delete:method").click()
         self.assertIn('<dd>Item(s) deleted.</dd>', self.browser.contents)
+
+    def test_usera_cuts_docs_folder_contents(self):
+        """Check if we are able to cut docs over folder_contents."""
+        self._auth_a()
+
+        self.browser.open(
+            self.folder_a.absolute_url() + '/folder_contents')
+        self.browser.getControl("doc-a").selected = True
+        self.browser.getControl("doc-b").selected = True
+        self.browser.getControl(name="folder_cut:method").click()
+        self.assertNotIn('<dd>One or more items not moveable.</dd>',
+                         self.browser.contents)
 
     def test_userb_remove_docs_folder_contents(self):
         """Check if the permission also works when we delete over
@@ -145,4 +234,17 @@ class TestCorrectPermissions(TestCase):
         self.browser.getControl(name="folder_delete:method").click()
         self.assertIn('<dd>/plone/rootfolder/folder-a/doc-a could not be '
                       'deleted.</dd>',
+                      self.browser.contents)
+
+    def test_userb_cuts_docs_folder_contents(self):
+        """Check if the permission also works when we delete over
+        folder_contents.
+        """
+        self._auth_b()
+
+        self.browser.open(self.folder_a.absolute_url() + '/folder_contents')
+        self.browser.getControl("doc-a").selected = True
+        self.browser.getControl("doc-b").selected = True
+        self.browser.getControl(name="folder_cut:method").click()
+        self.assertIn('<dd>One or more items not moveable.</dd>',
                       self.browser.contents)
