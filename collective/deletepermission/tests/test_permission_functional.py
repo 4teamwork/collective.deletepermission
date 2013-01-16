@@ -1,4 +1,5 @@
-from collective.deletepermission.testing import COLLECTIVE_DELETEPERMISSION_FUNCTIONAL_TESTING
+from collective.deletepermission.testing import (
+    COLLECTIVE_DELETEPERMISSION_FUNCTIONAL_TESTING)
 from unittest2 import TestCase
 from Products.CMFCore.utils import getToolByName
 from plone.app.testing import login
@@ -27,19 +28,24 @@ class TestCorrectPermissions(TestCase):
                                       'fullname': 'f\xc3\xbcllnameb',
                                       'email': 'userb@email.com'})
         #create folders
-        self.folder = self.portal.get(self.portal.invokeFactory('Folder', 'rootfolder'))
+        self.folder = self.portal.get(
+            self.portal.invokeFactory('Folder', 'rootfolder'))
         self.folder.manage_addLocalRoles('usera', ['Contributor'])
         self.folder.manage_addLocalRoles('userb', ['Contributor'])
         logout()
 
-        #change user and create objects. We need to do this so the owner is set right.
+        #change user and create objects. We need to do this so the owner is
+        # set right.
         login(self.portal, 'usera')
-        self.folder_a = self.folder.get(self.folder.invokeFactory('Folder', 'folder-a'))
-        self.doc_a = self.folder_a.get(self.folder_a.invokeFactory('Document', 'doc-a'))
+        self.folder_a = self.folder.get(
+            self.folder.invokeFactory('Folder', 'folder-a'))
+        self.doc_a = self.folder_a.get(
+            self.folder_a.invokeFactory('Document', 'doc-a'))
         logout()
 
         login(self.portal, 'userb')
-        self.doc_b = self.folder_a.get(self.folder_a.invokeFactory('Document', 'doc-b'))
+        self.doc_b = self.folder_a.get(
+            self.folder_a.invokeFactory('Document', 'doc-b'))
         logout()
         transaction.commit()
 
@@ -53,7 +59,8 @@ class TestCorrectPermissions(TestCase):
         self.browser.addHeader('Authorization', 'Basic %s:%s' % (
             'userb', 'userb',))
 
-        self.browser.open(self.portal.absolute_url()+'/rootfolder/folder-a/doc-b/delete_confirmation')
+        self.browser.open(
+            self.folder_a.absolute_url() + '/doc-b/delete_confirmation')
         self.browser.getControl("Delete").click()
 
     def test_usera_remove_folder(self):
@@ -63,7 +70,8 @@ class TestCorrectPermissions(TestCase):
         self.browser.addHeader('Authorization', 'Basic %s:%s' % (
             'usera', 'usera',))
 
-        self.browser.open(self.portal.absolute_url()+'/rootfolder/folder-a/delete_confirmation')
+        self.browser.open(
+            self.folder_a.absolute_url() + '/delete_confirmation')
         self.browser.getControl("Delete").click()
 
     def test_userb_remove_folder(self):
@@ -73,8 +81,10 @@ class TestCorrectPermissions(TestCase):
         self.browser.addHeader('Authorization', 'Basic %s:%s' % (
             'userb', 'userb',))
 
-        self.browser.open(self.portal.absolute_url()+'/rootfolder/folder-a/delete_confirmation')
-        self.assertRaises(Unauthorized, self.browser.getControl("Delete").click)
+        self.browser.open(
+            self.folder_a.absolute_url() + '/delete_confirmation')
+        self.assertRaises(Unauthorized,
+                          self.browser.getControl("Delete").click)
 
     def test_usera_remove_doc_a(self):
         """
@@ -83,7 +93,8 @@ class TestCorrectPermissions(TestCase):
         self.browser.addHeader('Authorization', 'Basic %s:%s' % (
             'usera', 'usera',))
 
-        self.browser.open(self.portal.absolute_url()+'/rootfolder/folder-a/doc-a/delete_confirmation')
+        self.browser.open(
+            self.folder_a.absolute_url() + '/doc-a/delete_confirmation')
         self.browser.getControl("Delete").click()
 
     def test_usera_remove_doc_b(self):
@@ -93,7 +104,8 @@ class TestCorrectPermissions(TestCase):
         self.browser.addHeader('Authorization', 'Basic %s:%s' % (
             'usera', 'usera',))
 
-        self.browser.open(self.portal.absolute_url()+'/rootfolder/folder-a/doc-b/delete_confirmation')
+        self.browser.open(
+            self.folder_a.absolute_url() + '/doc-b/delete_confirmation')
         self.browser.getControl("Delete").click()
 
     def test_userb_remove_doc_a(self):
@@ -103,27 +115,34 @@ class TestCorrectPermissions(TestCase):
         self.browser.addHeader('Authorization', 'Basic %s:%s' % (
             'userb', 'userb',))
 
-        self.browser.open(self.portal.absolute_url()+'/rootfolder/folder-a/doc-a/delete_confirmation')
-        self.assertRaises(Unauthorized, self.browser.getControl("Delete").click)
+        self.browser.open(
+            self.folder_a.absolute_url() + '/doc-a/delete_confirmation')
+        self.assertRaises(Unauthorized,
+                          self.browser.getControl("Delete").click)
 
     def test_usera_remove_docs_folder_contents(self):
         """Check if we are able to remove files over folder_contents."""
         self.browser.addHeader('Authorization', 'Basic %s:%s' % (
             'usera', 'usera',))
 
-        self.browser.open(self.portal.absolute_url()+'/rootfolder/folder-a/folder_contents')
+        self.browser.open(
+            self.folder_a.absolute_url() + '/folder_contents')
         self.browser.getControl("doc-a").selected = True
         self.browser.getControl("doc-b").selected = True
         self.browser.getControl(name="folder_delete:method").click()
         self.assertIn('<dd>Item(s) deleted.</dd>', self.browser.contents)
 
     def test_userb_remove_docs_folder_contents(self):
-        """Check if the permission also works when we delete over folder_contents."""
+        """Check if the permission also works when we delete over
+        folder_contents.
+        """
         self.browser.addHeader('Authorization', 'Basic %s:%s' % (
             'userb', 'userb',))
 
-        self.browser.open(self.portal.absolute_url()+'/rootfolder/folder-a/folder_contents')
+        self.browser.open(self.folder_a.absolute_url() + '/folder_contents')
         self.browser.getControl("doc-a").selected = True
         self.browser.getControl("doc-b").selected = True
         self.browser.getControl(name="folder_delete:method").click()
-        self.assertIn('<dd>/plone/rootfolder/folder-a/doc-a could not be deleted.</dd>', self.browser.contents)
+        self.assertIn('<dd>/plone/rootfolder/folder-a/doc-a could not be '
+                      'deleted.</dd>',
+                      self.browser.contents)
