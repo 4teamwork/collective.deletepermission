@@ -52,12 +52,19 @@ class TestCorrectPermissions(TestCase):
         self.browser = Browser(self.layer['app'])
         self.browser.handleErrors = False
 
+    def _auth_a(self):
+        self.browser.addHeader('Authorization', 'Basic %s:%s' % (
+            'usera', 'usera',))
+
+    def _auth_b(self):
+        self.browser.addHeader('Authorization', 'Basic %s:%s' % (
+            'userb', 'userb',))
+
     def test_userb_delete_docb(self):
         """
         Check if User B is able to delete his own document.
         """
-        self.browser.addHeader('Authorization', 'Basic %s:%s' % (
-            'userb', 'userb',))
+        self._auth_b()
 
         self.browser.open(
             self.folder_a.absolute_url() + '/doc-b/delete_confirmation')
@@ -67,8 +74,7 @@ class TestCorrectPermissions(TestCase):
         """
         Test if User A is able to delete his folder
         """
-        self.browser.addHeader('Authorization', 'Basic %s:%s' % (
-            'usera', 'usera',))
+        self._auth_a()
 
         self.browser.open(
             self.folder_a.absolute_url() + '/delete_confirmation')
@@ -78,8 +84,7 @@ class TestCorrectPermissions(TestCase):
         """
         Check if User B can delete User A's folder. Should not be possible.
         """
-        self.browser.addHeader('Authorization', 'Basic %s:%s' % (
-            'userb', 'userb',))
+        self._auth_b()
 
         self.browser.open(
             self.folder_a.absolute_url() + '/delete_confirmation')
@@ -90,8 +95,7 @@ class TestCorrectPermissions(TestCase):
         """
         Test if User A is able to delete his own Document.
         """
-        self.browser.addHeader('Authorization', 'Basic %s:%s' % (
-            'usera', 'usera',))
+        self._auth_a()
 
         self.browser.open(
             self.folder_a.absolute_url() + '/doc-a/delete_confirmation')
@@ -101,8 +105,7 @@ class TestCorrectPermissions(TestCase):
         """
         Test if User A is able to delete the Document of User B
         """
-        self.browser.addHeader('Authorization', 'Basic %s:%s' % (
-            'usera', 'usera',))
+        self._auth_a()
 
         self.browser.open(
             self.folder_a.absolute_url() + '/doc-b/delete_confirmation')
@@ -112,8 +115,7 @@ class TestCorrectPermissions(TestCase):
         """
         Check if User B can remove User A's Document. Should not be possible.
         """
-        self.browser.addHeader('Authorization', 'Basic %s:%s' % (
-            'userb', 'userb',))
+        self._auth_b()
 
         self.browser.open(
             self.folder_a.absolute_url() + '/doc-a/delete_confirmation')
@@ -122,8 +124,7 @@ class TestCorrectPermissions(TestCase):
 
     def test_usera_remove_docs_folder_contents(self):
         """Check if we are able to remove files over folder_contents."""
-        self.browser.addHeader('Authorization', 'Basic %s:%s' % (
-            'usera', 'usera',))
+        self._auth_a()
 
         self.browser.open(
             self.folder_a.absolute_url() + '/folder_contents')
@@ -136,8 +137,7 @@ class TestCorrectPermissions(TestCase):
         """Check if the permission also works when we delete over
         folder_contents.
         """
-        self.browser.addHeader('Authorization', 'Basic %s:%s' % (
-            'userb', 'userb',))
+        self._auth_b()
 
         self.browser.open(self.folder_a.absolute_url() + '/folder_contents')
         self.browser.getControl("doc-a").selected = True
