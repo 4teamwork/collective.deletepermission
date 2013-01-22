@@ -79,7 +79,7 @@ class TestCorrectPermissions(TestCase):
 
         self.browser.open(
             self.folder_a.absolute_url() + '/doc-b')
-        link = self.browser.getLink(id="plone-contentmenu-actions-cut")
+        link = self.browser.getLink("Cut")
         self.assertTrue(link)
 
         link.click()
@@ -101,7 +101,7 @@ class TestCorrectPermissions(TestCase):
         self._auth_a()
 
         self.browser.open(self.folder_a.absolute_url())
-        link = self.browser.getLink(id='plone-contentmenu-actions-cut')
+        link = self.browser.getLink("Cut")
 
         self.assertTrue(link)
         link.click()
@@ -124,8 +124,7 @@ class TestCorrectPermissions(TestCase):
         self._auth_b()
         self.browser.open(self.folder_a.absolute_url())
 
-        self.assertRaises(LinkNotFoundError, self.browser.getLink,
-                         'plone-contentmenu-actions-cut')
+        self.assertRaises(LinkNotFoundError, self.browser.getLink, 'Cut')
 
         self.assertRaises(Unauthorized,
                           self.folder_a.restrictedTraverse('object_cut'))
@@ -147,7 +146,7 @@ class TestCorrectPermissions(TestCase):
         self._auth_a()
 
         self.browser.open(self.doc_a.absolute_url())
-        link = self.browser.getLink(id='plone-contentmenu-actions-cut')
+        link = self.browser.getLink('Cut')
 
         self.assertTrue(link)
         link.click()
@@ -169,7 +168,7 @@ class TestCorrectPermissions(TestCase):
         self._auth_a()
 
         self.browser.open(self.doc_b.absolute_url())
-        link = self.browser.getLink(id='plone-contentmenu-actions-cut')
+        link = self.browser.getLink('Cut')
 
         self.assertTrue(link)
         link.click()
@@ -194,7 +193,7 @@ class TestCorrectPermissions(TestCase):
         self.browser.open(self.doc_a.absolute_url())
 
         self.assertRaises(LinkNotFoundError, self.browser.getLink,
-                         'plone-contentmenu-actions-cut')
+                         'Cut')
 
         self.assertRaises(Unauthorized,
                           self.folder_a.restrictedTraverse('object_cut'))
