@@ -11,6 +11,14 @@
       </property>
     </object>
 
+    <object name="rename" meta_type="CMF Action" i18n:domain="plone">
+      <property name="available_expr">python:checkPermission("Delete objects", globals_view.getParentObject()) and checkPermission("Copy or Move", object) and checkPermission("Delete portal content", object) and checkPermission("Add portal content", object) and not globals_view.isPortalOrPortalDefaultPage()</property>
+      <property name="permissions">
+        <element value="Delete portal content"/>
+        <element value="Copy or Move"/>
+      </property>
+    </object>
+
     <object name="delete" meta_type="CMF Action" i18n:domain="plone">
       <property name="title" i18n:translate="">Delete</property>
       <property name="description" i18n:translate=""></property>
