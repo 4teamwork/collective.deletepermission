@@ -6,7 +6,7 @@ without beeing able to delete the folder itself.
 
 The `collective.deletepermission` package introduces an additinal permission ``Delete portal content``.
 By seperating the permission ``Delete portal content`` (I can delete this content object)  from the
-permission ``Delete objects`` (I can delete something IN this folder) we can now allow a Contributor to delete
+permission ``Delete objects`` (I can delete something IN this folder) we can now allow a ``Contributor`` to delete
 contents he created (``Owner`` role) without letting him delete folders and objects of other users - even in
 a nested environment.
 
@@ -16,51 +16,46 @@ Implementation details
 
 This package monkeypatches:
 
-- manage_delObjects of AT BaseFolder
+- ``manage_delObjects`` of AT BaseFolder
 
-- manage_cutObjects__roles__ of AT BaseFolderMixin
+- ``manage_cutObjects__roles__`` of AT BaseFolderMixin
 
-- the cb_userHasCopyOrMovePermissionchecks of OFS CopySupport
+- ``cb_userHasCopyOrMovePermissionchecks`` of OFS CopySupport
 
-and overrides the following templates and scripts:
+and overrides the following templates and scripts (skins):
 
-- folder_rename_form.cpt
+- ``folder_rename_form.cpt``
 
-- object_rename.py
+- ``object_rename.py``
 
 to implement a new ``Delete portal content`` permission.
 
 
-The ``Delete portal content`` permission is now required on the object you want to delete. On parent objects the ``Delete objects``
-permission still is required.
+The ``Delete portal content`` permission is now required on the object you want to delete.
+On parent objects the ``Delete objects`` permission still is required.
 This gives us some more flexibility and makes it possible for a contributor to delete his own content but nothing else.
 On the graph below you can see the situation with the default permission settings and if it is deletable by Contributor1.
 
-- Rootfolder of Admin (not deletable)
+::
 
-  - Document of Contributor1 (deletable)
+  → Rootfolder of Admin (not deletable)
+    ↳ Document of Contributor1 (deletable)
+    ↳ Subfolder of Admin (not deletable)
+      ↳ Document of Contributor1 (deletable)
+      ↳ Document of Contrubutor2 (not deletable)
 
-  - Subfolder of Admin (not deletable)
+In default Plone this would look like this::
 
-    - Document of Contributor1 (deletable)
-
-    - Document of Contrubutor2 (not deletable)
-
-In default Plone this would look like this:
-
-- Rootfolder of Admin (not deletable)
-
-  - Document of Contributor1 (deletable)
-
-  - Subfolder of Admin (deletable)
-
-    - Document of Contributor1 (deletable)
-
-    - Document of Contrubutor2 (deletable)
+  → Rootfolder of Admin (not deletable)
+    ↳ Document of Contributor1 (deletable)
+    ↳ Subfolder of Admin (deletable)
+      ↳ Document of Contributor1 (deletable)
+      ↳ Document of Contrubutor2 (deletable)
 
 This is caused by the fact that in default Plone we require the same permission on the parent and the object.
 If we have two levels where we should be able to delete some files, we always end up with the user beeing able
 to delete the container of the second level.
+
 
 Usage
 -----
