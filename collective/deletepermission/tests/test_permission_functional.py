@@ -1,13 +1,14 @@
+from AccessControl import Unauthorized
 from collective.deletepermission.testing import (
     COLLECTIVE_DELETEPERMISSION_FUNCTIONAL_TESTING)
-from unittest2 import TestCase
-from Products.CMFCore.utils import getToolByName
+from mechanize._mechanize import LinkNotFoundError
 from plone.app.testing import login
 from plone.app.testing import logout
-import transaction
+from plone.app.testing import TEST_USER_NAME
 from plone.testing.z2 import Browser
-from AccessControl import Unauthorized
-from mechanize._mechanize import LinkNotFoundError
+from Products.CMFCore.utils import getToolByName
+from unittest2 import TestCase
+import transaction
 
 
 class TestCorrectPermissions(TestCase):
@@ -53,6 +54,13 @@ class TestCorrectPermissions(TestCase):
         self.browser = Browser(self.layer['app'])
         self.browser.handleErrors = False
 
+    def tearDown(self):
+        super(TestCorrectPermissions, self).tearDown()
+        portal = self.layer['portal']
+        login(portal, TEST_USER_NAME)
+        portal.manage_delObjects(['rootfolder'])
+        transaction.commit()
+
     def _auth_a(self):
         self.browser.addHeader('Authorization', 'Basic %s:%s' % (
             'usera', 'usera',))
@@ -84,6 +92,25 @@ class TestCorrectPermissions(TestCase):
 
         link.click()
 
+    def test_userb_rename_docb(self):
+        """
+        Check if User B is able to rename his own document.
+        """
+        self._auth_b()
+
+        self.browser.open(
+            self.folder_a.absolute_url() + '/doc-b')
+        link = self.browser.getLink("Rename")
+        self.assertTrue(link)
+
+        link.click()
+
+        self.browser.getControl(name="new_ids:list").value = 'doc-b-renamed'
+        self.browser.getControl(name="form.button.RenameAll").click()
+
+        self.assertEquals(self.browser.url,
+            self.folder_a.absolute_url() + '/doc-b-renamed')
+
     def test_usera_remove_folder(self):
         """
         Test if User A is able to delete his folder
@@ -105,6 +132,24 @@ class TestCorrectPermissions(TestCase):
 
         self.assertTrue(link)
         link.click()
+
+    def test_usera_rename_folder(self):
+        """
+        Test if User A is able to rename his folder
+        """
+        self._auth_a()
+
+        self.browser.open(self.folder_a.absolute_url())
+        link = self.browser.getLink("Rename")
+
+        self.assertTrue(link)
+        link.click()
+
+        self.browser.getControl(name="new_ids:list").value = 'folder-a-renamed'
+        self.browser.getControl(name="form.button.RenameAll").click()
+
+        self.assertEquals(self.browser.url,
+            self.folder.absolute_url() + '/folder-a-renamed')
 
     def test_userb_remove_folder(self):
         """
@@ -129,6 +174,18 @@ class TestCorrectPermissions(TestCase):
         self.assertRaises(Unauthorized,
                           self.folder_a.restrictedTraverse('object_cut'))
 
+    def test_userb_rename_folder(self):
+        """
+        Check if User B can't rename User A's folder.
+        """
+        self._auth_b()
+        self.browser.open(self.folder_a.absolute_url())
+
+        self.assertRaises(LinkNotFoundError, self.browser.getLink, 'Rename')
+
+        self.assertRaises(Unauthorized,
+                          self.folder_a.restrictedTraverse('object_rename'))
+
     def test_usera_remove_doc_a(self):
         """
         Test if User A is able to delete his own Document.
@@ -151,6 +208,24 @@ class TestCorrectPermissions(TestCase):
         self.assertTrue(link)
         link.click()
 
+    def test_usera_rename_doc_a(self):
+        """
+        Test if User A is able to rename his own Document.
+        """
+        self._auth_a()
+
+        self.browser.open(self.doc_a.absolute_url())
+        link = self.browser.getLink('Rename')
+
+        self.assertTrue(link)
+        link.click()
+
+        self.browser.getControl(name="new_ids:list").value = 'doc-a-renamed'
+        self.browser.getControl(name="form.button.RenameAll").click()
+
+        self.assertEquals(self.browser.url,
+            self.folder_a.absolute_url() + '/doc-a-renamed')
+
     def test_usera_remove_doc_b(self):
         """
         Test if User A is able to delete the Document of User B
@@ -172,6 +247,24 @@ class TestCorrectPermissions(TestCase):
 
         self.assertTrue(link)
         link.click()
+
+    def test_usera_rename_doc_b(self):
+        """
+        Test if User A is able to rename the Document of User B
+        """
+        self._auth_a()
+
+        self.browser.open(self.doc_b.absolute_url())
+        link = self.browser.getLink('Rename')
+
+        self.assertTrue(link)
+        link.click()
+
+        self.browser.getControl(name="new_ids:list").value = 'doc-b-renamed'
+        self.browser.getControl(name="form.button.RenameAll").click()
+
+        self.assertEquals(self.browser.url,
+            self.folder_a.absolute_url() + '/doc-b-renamed')
 
     def test_userb_remove_doc_a(self):
         """
@@ -198,6 +291,20 @@ class TestCorrectPermissions(TestCase):
         self.assertRaises(Unauthorized,
                           self.folder_a.restrictedTraverse('object_cut'))
 
+    def test_userb_rename_doc_a(self):
+        """
+        Check if User B can't rename User A's Document.
+        """
+        self._auth_b()
+
+        self.browser.open(self.doc_a.absolute_url())
+
+        self.assertRaises(LinkNotFoundError, self.browser.getLink,
+                         'Rename')
+
+        self.assertRaises(Unauthorized,
+                          self.folder_a.restrictedTraverse('object_rename'))
+
     def test_usera_remove_docs_folder_contents(self):
         """Check if we are able to remove files over folder_contents."""
         self._auth_a()
@@ -221,6 +328,18 @@ class TestCorrectPermissions(TestCase):
         self.assertNotIn('<dd>One or more items not moveable.</dd>',
                          self.browser.contents)
 
+    def test_usera_renames_docs_folder_contents(self):
+        """Check if we are able to rename docs over folder_contents."""
+        self._auth_a()
+
+        self.browser.open(
+            self.folder_a.absolute_url() + '/folder_contents')
+        self.browser.getControl("doc-a").selected = True
+        self.browser.getControl("doc-b").selected = True
+        self.browser.getControl(name="folder_rename_form:method").click()
+
+        self.assertEquals(self.browser.contents.count('paths:list'), 2)
+
     def test_userb_remove_docs_folder_contents(self):
         """Check if the permission also works when we delete over
         folder_contents.
@@ -236,7 +355,7 @@ class TestCorrectPermissions(TestCase):
                       self.browser.contents)
 
     def test_userb_cuts_docs_folder_contents(self):
-        """Check if the permission also works when we delete over
+        """Check if the permission also works when we cut over
         folder_contents.
         """
         self._auth_b()
@@ -247,3 +366,16 @@ class TestCorrectPermissions(TestCase):
         self.browser.getControl(name="folder_cut:method").click()
         self.assertIn('<dd>One or more items not moveable.</dd>',
                       self.browser.contents)
+
+    def test_userb_renames_docs_folder_contents(self):
+        """Check if the permission also works when we rename over
+        folder_contents.
+        """
+        self._auth_b()
+
+        self.browser.open(self.folder_a.absolute_url() + '/folder_contents')
+        self.browser.getControl("doc-a").selected = True
+        self.browser.getControl("doc-b").selected = True
+        self.browser.getControl(name="folder_rename_form:method").click()
+
+        self.assertEquals(self.browser.contents.count('paths:list'), 1)
