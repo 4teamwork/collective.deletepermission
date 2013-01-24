@@ -43,19 +43,19 @@ Contributor1.
 
 ::
 
-  → Rootfolder of Admin (not deletable)
-    ↳ Document of Contributor1 (deletable)
-    ↳ Subfolder of Admin (not deletable)
-      ↳ Document of Contributor1 (deletable)
-      ↳ Document of Contrubutor2 (not deletable)
+  - Rootfolder of Admin (not deletable)
+    '- Document of Contributor1 (deletable)
+    '- Subfolder of Admin (not deletable)
+      '- Document of Contributor1 (deletable)
+      '- Document of Contrubutor2 (not deletable)
 
 In default Plone this would look like this::
 
-  → Rootfolder of Admin (not deletable)
-    ↳ Document of Contributor1 (deletable)
-    ↳ Subfolder of Admin (deletable)
-      ↳ Document of Contributor1 (deletable)
-      ↳ Document of Contrubutor2 (deletable)
+  - Rootfolder of Admin (not deletable)
+    '- Document of Contributor1 (deletable)
+    '- Subfolder of Admin (deletable)
+      '- Document of Contributor1 (deletable)
+      '- Document of Contrubutor2 (deletable)
 
 This is caused by the fact that in default Plone we require the same permission
 on the parent and the object.
