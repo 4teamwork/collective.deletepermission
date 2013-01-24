@@ -1,6 +1,19 @@
 collective.deletepermission
 ===========================
 
+The default Plone permission for deleting content does not allow to delete contents from a folder
+without beeing able to delete the folder itself.
+
+The `collective.deletepermission` package introduces an additinal permission ``Delete portal content``.
+By seperating the permission ``Delete portal content`` (I can delete this content object)  from the
+permission ``Delete objects`` (I can delete something IN this folder) we can now allow a Contributor to delete
+contents he created (``Owner`` role) without letting him delete folders and objects of other users - even in
+a nested environment.
+
+
+Implementation details
+----------------------
+
 This package monkeypatches:
 
 - manage_delObjects of AT BaseFolder
