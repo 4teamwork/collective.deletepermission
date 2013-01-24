@@ -14,6 +14,8 @@ tests_require = [
     'Products.CMFCore',
     'Products.GenericSetup',
     'plone.app.portlets',
+    'Zope2',
+    'mechanize',
     ]
 
 
@@ -30,7 +32,7 @@ long_description = (
 
 setup(name='collective.deletepermission',
       version=version,
-      description="This package monkeypatches the Archetypes manage_delObject and checks for a new permission called ``Delete portal content``",
+      description="Implements a new permission ``Delete portal content``",
       long_description=long_description,
 
       # Get more strings from
@@ -60,6 +62,8 @@ setup(name='collective.deletepermission',
           'setuptools',
           'AccessControl',
           'Products.CMFCore',
+          'Products.CMFPlone',
+          'Products.PythonScripts',
           'Products.Archetypes',
           'collective.monkeypatcher',
           # -*- Extra requirements: -*-

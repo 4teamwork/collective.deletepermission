@@ -5,7 +5,7 @@ from plone.app.testing import PloneSandboxLayer
 from plone.app.testing import setRoles, TEST_USER_ID, TEST_USER_NAME, login
 from zope.configuration import xmlconfig
 from plone.app.testing import applyProfile
-from plone.testing import z2
+
 
 class CollectiveDeletepermissionLayer(PloneSandboxLayer):
 
@@ -30,6 +30,8 @@ class CollectiveDeletepermissionLayer(PloneSandboxLayer):
 
 COLLECTIVE_DELETEPERMISSION_FIXTURE = CollectiveDeletepermissionLayer()
 COLLECTIVE_DELETEPERMISSION_INTEGRATION_TESTING = IntegrationTesting(
-    bases=(COLLECTIVE_DELETEPERMISSION_FIXTURE, ), name="CollectiveDeletepermission:Integration")
+    bases=(COLLECTIVE_DELETEPERMISSION_FIXTURE, ),
+    name="CollectiveDeletepermission:Integration")
 COLLECTIVE_DELETEPERMISSION_FUNCTIONAL_TESTING = FunctionalTesting(
-    bases=(COLLECTIVE_DELETEPERMISSION_FIXTURE, ), name="CollectiveDeletepermission:Functional")
+    bases=(COLLECTIVE_DELETEPERMISSION_FIXTURE, ),
+    name="CollectiveDeletepermission:Functional")
