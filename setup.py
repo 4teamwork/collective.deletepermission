@@ -32,7 +32,7 @@ long_description = (
 
 setup(name='collective.deletepermission',
       version=version,
-      description="Implements a new permission ``Delete portal content``",
+      description="Implements a new permission 'Delete portal content'",
       long_description=long_description.decode('utf-8'),
 
       # Get more strings from
