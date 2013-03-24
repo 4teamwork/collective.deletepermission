@@ -76,6 +76,13 @@ Usage
 
 - Install the generic setup import profile.
 
+
+Compatibility
+-------------
+
+Runs with `Plone <http://www.plone.org/>`_ `4.1`, `4.2` and `4.3`.
+
+
 Links
 -----
 
