@@ -25,6 +25,13 @@
       replacement="collective.deletepermission.cut_object.cb_userHasCopyOrMovePermission"
       />
 
+  <monkey:patch
+      description="Patch manage_renameObject"
+      class="OFS.CopySupport.CopyContainer"
+      original="manage_renameObject"
+      replacement="collective.deletepermission.rename.manage_renameObject"
+      />
+
   <genericsetup:registerProfile
       name="default"
       title="collective.deletepermission"
