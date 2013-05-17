@@ -50,46 +50,66 @@ class TestCorrectPermissions(TestCase):
 
         transaction.commit()
 
+        # | obj            | user a             | user b             |
+        # | folder-a       | Contributor, Owner | Contributor        |
+        # | folder-a/doc-a | Contributor, Owner | Contributor        |
+        # | folder-a/doc-b | Contributor        | Contributor, Owner |
+
     def test_usera_cut_folder(self):
-        """Test if usera can cut his folder"""
+        """usera should be able to cut his own folder
+        becauase he is its Owner"""
+
         login(self.portal, 'usera')
         self.folder.manage_cutObjects(['folder-a'])
 
     def test_userb_cut_folder(self):
-        """Test if userb can't cut usera's folder"""
+        """userb should NOT be able to cut usera's folder, because he is
+        not its Owner"""
+
         login(self.portal, 'userb')
         self.assertRaises(CopyError,
                           self.folder.manage_cutObjects,
                           ['folder-a'])
 
     def test_usera_cut_doc_a(self):
-        """Test if usera can cut his doc"""
+        """usera should be able to cut doc-a, because he is its Owner"""
+
         login(self.portal, 'usera')
         self.folder_a.manage_cutObjects(['doc-a'])
 
     def test_usera_cut_doc_b(self):
-        """Test if usera can cut userb's doc"""
+        """usera should be able to cut doc-b, because ???????????????????"""
+        # XXX why?
+
         login(self.portal, 'usera')
         self.folder_a.manage_cutObjects(['doc-b'])
 
     def test_userb_cut_doc_a(self):
-        """Test if userb can't cut usera's folder"""
+        """userb should NOT be able to cut coc-a, because his not Owner"""
+        # XXX should this be raised upon paste??
+
         login(self.portal, 'userb')
         self.assertRaises(CopyError,
                           self.folder_a.manage_cutObjects,
                           'doc-a')
 
     def test_userb_cut_doc_b(self):
-        """Test if userb can cut his doc"""
+        """userb should be able to cut his own document"""
+
         login(self.portal, 'userb')
         self.folder_a.manage_cutObjects(['doc-b'])
 
     def test_cut_multiple(self):
-        """Test if we still are able to cut multiple objects at once."""
+        """Cutting objects INCLUDING an object which cannot be cut should not
+        raise, so that the OTHER object is cut (not the transaction not
+        cancelled because of the exception)
+        """
+
         login(self.portal, 'usera')
         self.folder_a.manage_cutObjects(['doc-a', 'doc-b'])
 
     def test_cut_empty(self):
-        """Check that we don't throw errors if we get a id that is none'"""
+        """Cutting "None" should throw a ValueError."""
+
         login(self.portal, 'usera')
         self.assertRaises(ValueError, self.folder_a.manage_cutObjects, None)

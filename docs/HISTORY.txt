@@ -4,7 +4,8 @@ Changelog
 1.1 (unreleased)
 ----------------
 
-- Nothing changed yet.
+- Do not require 'Delete portal content' permission when renaming an object.
+  [buchi]
 
 
 1.0 (2013-01-24)
