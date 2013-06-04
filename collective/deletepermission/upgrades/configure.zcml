@@ -1,0 +1,26 @@
+<configure
+    xmlns="http://namespaces.zope.org/zope"
+    xmlns:genericsetup="http://namespaces.zope.org/genericsetup"
+    i18n_domain="collective.deletepermission">
+
+    <!-- 1000 -> 1001 -->
+    <genericsetup:upgradeStep
+        title="Fix permission check in Delete action"
+        description=""
+        source="1000"
+        destination="1001"
+        handler="collective.deletepermission.upgrades.to1001.UpdateDeleteAction"
+        profile="collective.deletepermission:default"
+        />
+
+    <genericsetup:registerProfile
+        name="1001"
+        title="collective.deletepermission.upgrades.1001"
+        description=""
+        directory="profiles/1001"
+        for="Products.CMFPlone.interfaces.IMigratingPloneSiteRoot"
+        provides="Products.GenericSetup.interfaces.EXTENSION"
+        />
+
+
+</configure>

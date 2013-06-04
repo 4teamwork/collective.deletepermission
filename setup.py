@@ -5,17 +5,18 @@ version = '1.2.dev0'
 maintainer = "Timon Tschanz"
 
 tests_require = [
-    'unittest2',
-    'plone.app.testing',
-    'plone.testing',
-    'transaction',
-    'zope.configuration',
     'AccessControl',
     'Products.CMFCore',
     'Products.GenericSetup',
-    'plone.app.portlets',
     'Zope2',
+    'lxml',
     'mechanize',
+    'plone.app.portlets',
+    'plone.app.testing',
+    'plone.testing',
+    'transaction',
+    'unittest2',
+    'zope.configuration',
     ]
 
 
@@ -60,13 +61,14 @@ setup(name='collective.deletepermission',
       zip_safe=False,
 
       install_requires=[
-          'setuptools',
           'AccessControl',
+          'Products.Archetypes',
           'Products.CMFCore',
           'Products.CMFPlone',
           'Products.PythonScripts',
-          'Products.Archetypes',
           'collective.monkeypatcher',
+          'ftw.upgrade',
+          'setuptools',
           # -*- Extra requirements: -*-
       ],
 
