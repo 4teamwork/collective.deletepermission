@@ -9,6 +9,7 @@
 
   <include package="collective.monkeypatcher" />
 
+  <include package=".upgrades" />
   <include file="permissions.zcml" />
 
   <monkey:patch
