@@ -1,8 +1,8 @@
 Changelog
 =========
 
-1.2 (unreleased)
-----------------
+1.1.1 (2013-06-04)
+------------------
 
 - Only show "Delete" action with "Delete objects" on the container.
   [jone]
