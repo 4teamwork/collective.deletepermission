@@ -25,7 +25,7 @@
       <property name="url_expr">string:$object_url/delete_confirmation</property>
       <property name="link_target"></property>
       <property name="icon_expr"></property>
-      <property name="available_expr"></property>
+      <property name="available_expr">python:checkPermission("Delete objects", globals_view.getParentObject())</property>
       <property name="permissions">
         <element value="Delete portal content"/>
       </property>
