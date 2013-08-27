@@ -27,6 +27,13 @@
       />
 
   <monkey:patch
+      description="Patch cb_isCopyable"
+      class="OFS.CopySupport.CopySource"
+      original="cb_isCopyable"
+      replacement="collective.deletepermission.copy.cb_isCopyable"
+      />
+
+  <monkey:patch
       description="Patch manage_renameObject"
       class="OFS.CopySupport.CopyContainer"
       original="manage_renameObject"
