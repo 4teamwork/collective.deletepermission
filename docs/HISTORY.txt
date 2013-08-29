@@ -4,7 +4,10 @@ Changelog
 1.1.2 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Copy no longer requires "Delete portal content".
+  Requiring "Delete portal content" was introduced accidentally
+  for copying because of a patch for cutting.
+  [jone]
 
 
 1.1.1 (2013-06-04)

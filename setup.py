@@ -17,6 +17,7 @@ tests_require = [
     'transaction',
     'unittest2',
     'zope.configuration',
+    'ftw.builder',
     ]
 
 
