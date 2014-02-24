@@ -4,7 +4,12 @@ Changelog
 1.1.3 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Fix protection of manage_delObjects with "Delete objects".
+  In certain situations, when only having the permission to delete the
+  content ("Delete portal content") but not the permission to delete from the
+  the parent container ("Delete objects" on the parent) deleting was possible
+  even though it shouldn't have been.
+  [jone]
 
 
 1.1.2 (2013-10-17)
