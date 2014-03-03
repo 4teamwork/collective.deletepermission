@@ -1,7 +1,7 @@
 Changelog
 =========
 
-1.1.3 (unreleased)
+1.1.3 (2014-03-03)
 ------------------
 
 - Fix protection of manage_delObjects with "Delete objects".
