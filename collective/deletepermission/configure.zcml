@@ -20,6 +20,13 @@
       />
 
   <monkey:patch
+      description="Patch dexterity's manage_delObjects"
+      class="plone.dexterity.content.Container"
+      original="manage_delObjects"
+      replacement="collective.deletepermission.del_object_dexterity.manage_delObjects"
+      />
+
+  <monkey:patch
       description="Patch cb_userHasCopyOrMovePermissions"
       class="OFS.CopySupport.CopySource"
       original="cb_userHasCopyOrMovePermission"
