@@ -39,12 +39,6 @@ class CollectiveDeletepermissionDXLayer(PloneSandboxLayer):
 
     def setUpZope(self, app, configurationContext):
         # Load ZCML
-        # import plone.app.dexterity
-        # import collective.deletepermission
-        # xmlconfig.file('configure.zcml', plone.app.dexterity,
-        #                context=configurationContext)
-        # xmlconfig.file('configure.zcml', collective.deletepermission,
-        #                context=configurationContext)
         import plone.app.dexterity
         self.loadZCML(package=plone.app.dexterity)
         import collective.deletepermission
