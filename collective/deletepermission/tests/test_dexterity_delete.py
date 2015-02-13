@@ -35,14 +35,6 @@ class TestDXDeleting(TestCase):
     def setUp(self):
         setRoles(self.layer['portal'], TEST_USER_ID, ['Contributor'])
         login(self.layer['portal'], TEST_USER_NAME)
-        # add sample fti
-        self.portal = self.layer['portal']
-        self.fti = DexterityFTI('dexterity.folder')
-        self.fti.klass = 'collective.deletepermission.tests.test_dexterity_delete.DXFolder'
-        self.fti.schema = 'collective.deletepermission.tests.test_dexterity_delete.IDXFolder'
-        self.fti.allowed_content_types = ('dexterity.folder',)
-        self.fti.behaviors = ('plone.app.dexterity.behaviors.metadata.IBasic',)
-        self.portal.portal_types._setObject('dexterity.folder', self.fti)
 
     def test_delete_possible_with_both_permissions(self):
         parent = create(Builder('dexterity.folder'))

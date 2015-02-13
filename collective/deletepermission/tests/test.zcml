@@ -1,4 +1,5 @@
 <configure xmlns="http://namespaces.zope.org/zope"
+        xmlns:genericsetup="http://namespaces.zope.org/genericsetup"
            i18n_domain="Five">
 
     <include package="Products.GenericSetup" file="meta.zcml" />
@@ -7,5 +8,14 @@
 
     <include package="AccessControl" file="permissions.zcml" />
     <include package="Products.CMFCore" file="permissions.zcml" />
+
+    <genericsetup:registerProfile
+        name="dxtests"
+        title="collective.deletepermission"
+        directory="profiles/dxprofile"
+        description=""
+        provides="Products.GenericSetup.interfaces.EXTENSION"
+        />
+
 
 </configure>

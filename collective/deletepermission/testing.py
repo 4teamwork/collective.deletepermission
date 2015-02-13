@@ -43,6 +43,8 @@ class CollectiveDeletepermissionDXLayer(PloneSandboxLayer):
         self.loadZCML(package=plone.app.dexterity)
         import collective.deletepermission
         self.loadZCML(package=collective.deletepermission)
+        self.loadZCML(package=collective.deletepermission.tests,
+            name='test.zcml')
 
         # installProduct() is *only* necessary for packages outside
         # the Products.* namespace which are also declared as Zope 2
@@ -51,6 +53,7 @@ class CollectiveDeletepermissionDXLayer(PloneSandboxLayer):
     def setUpPloneSite(self, portal):
         # Install into Plone site using portal_setup
         applyProfile(portal, 'collective.deletepermission:default')
+        applyProfile(portal, 'collective.deletepermission.tests:dxtests')
         setRoles(portal, TEST_USER_ID, ['Manager', 'Contributor'])
         login(portal, TEST_USER_NAME)
 
