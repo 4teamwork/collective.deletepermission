@@ -6,6 +6,7 @@ from ftw.testbrowser import browser
 from plone.app.testing import login
 from Products.statusmessages.interfaces import IStatusMessage
 from unittest2 import TestCase
+import transaction
 
 
 class FunctionalTestCase(TestCase):
@@ -14,6 +15,14 @@ class FunctionalTestCase(TestCase):
 
     def revoke_permission(self, permission, on):
         on.manage_permission(permission, roles=[], acquire=False)
+
+    def set_local_roles(self, context, user, *roles):
+        if hasattr(user, 'getUserName'):
+            user = user.getUserName()
+
+        context.manage_setLocalRoles(user, tuple(roles))
+        context.reindexObjectSecurity()
+        transaction.commit()
 
     def get_status_messages(self):
         request = self.layer['request']
