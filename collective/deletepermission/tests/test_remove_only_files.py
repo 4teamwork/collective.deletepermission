@@ -1,75 +1,44 @@
-from collective.deletepermission.testing import COLLECTIVE_DELETEPERMISSION_FUNCTIONAL_TESTING
-from unittest2 import TestCase
-from Products.CMFCore.utils import getToolByName
-from plone.app.testing import login
-from plone.app.testing import logout
 from AccessControl import Unauthorized
-import transaction
-from plone.testing.z2 import Browser
+from collective.deletepermission.tests.base import FunctionalTestCase
+from ftw.builder import Builder
+from ftw.builder import create
+from ftw.testbrowser import browsing
 
 
-class TestOnlyFiles(TestCase):
-
-    layer = COLLECTIVE_DELETEPERMISSION_FUNCTIONAL_TESTING
+class TestOnlyFiles(FunctionalTestCase):
 
     def setUp(self):
-        self.portal = self.layer['portal']
+        self.user_a = create(Builder('user').with_userid('usera'))
 
-        #add members
-        regtool = getToolByName(self.portal, 'portal_registration')
+        self.folder = create(Builder('folder').titled('rootfolder'))
+        self.set_local_roles(self.folder, self.user_a, 'Contributor')
 
-        regtool.addMember('usera', 'usera',
-                          properties={'username': 'usera',
-                                      'fullname': 'f\xc3\xbcllnamea',
-                                      'email': 'usera@email.com'})
+        self.subfolder = create(Builder('folder').titled('subfolder')
+                                .within(self.folder))
 
-        # create structure
-        self.folder = self.portal.get(
-            self.portal.invokeFactory('Folder', 'rootfolder'))
-        self.folder.manage_addLocalRoles('usera', ['Contributor'])
-        self.subfolder = self.folder.get(
-            self.folder.invokeFactory('Folder', 'subfolder'))
-        logout()
+        with self.user(self.user_a):
+            self.firstleveldoc = create(Builder('document')
+                                        .with_id('doc-firstleveldoc')
+                                        .within(self.folder))
+            self.secondleveldoc = create(Builder('document')
+                                         .with_id('doc-secondleveldoc')
+                                         .within(self.subfolder))
 
-        # Login as user and create some docs. We need to change user so the
-        # owner is set right
-        login(self.portal, 'usera')
-        self.firstleveldoc = self.folder.get(
-            self.folder.invokeFactory('Document', 'doc-firstlevel'))
-        self.secondleveldoc = self.subfolder.get(
-            self.subfolder.invokeFactory('Document', 'doc-secondlevel'))
-        transaction.commit()
-
-        self.browser = Browser(self.layer['app'])
-        self.browser.handleErrors = False
-
-    def test_delete_secondlevel(self):
+    @browsing
+    def test_delete_secondlevel(self, browser):
         """Test if we are able to delete the file in the subfolder"""
-        self.browser.addHeader('Authorization', 'Basic %s:%s' % (
-            'usera', 'usera',))
+        browser.login(self.user_a).open(self.secondleveldoc, view='delete_confirmation')
+        browser.find('Delete').click()
 
-        self.browser.open(
-            self.portal.absolute_url() + '/rootfolder/subfolder/doc-secondleve'
-                                         'l/delete_confirmation')
-        self.browser.getControl("Delete").click()
-
-    def test_delete_firstlevel(self):
+    @browsing
+    def test_delete_firstlevel(self, browser):
         """Test if we are able to delete the file in the rootfolder"""
-        self.browser.addHeader('Authorization', 'Basic %s:%s' % (
-            'usera', 'usera',))
+        browser.login(self.user_a).open(self.firstleveldoc, view='delete_confirmation')
+        browser.find('Delete').click()
 
-        self.browser.open(
-            self.portal.absolute_url() + '/rootfolder/doc-firstlevel/delete_'
-                                         'confirmation')
-        self.browser.getControl("Delete").click()
-
-    def test_delete_subfolder(self):
+    @browsing
+    def test_delete_subfolder(self, browser):
         """Test if we can delete the subfolder. This should not be the case."""
-        self.browser.addHeader('Authorization', 'Basic %s:%s' % (
-            'usera', 'usera',))
-
-        self.browser.open(
-            self.portal.absolute_url() + '/rootfolder/subfolder/delete_'
-                                         'confirmation')
-        self.assertRaises(Unauthorized,
-                          self.browser.getControl("Delete").click)
+        browser.login(self.user_a).open(self.subfolder, view='delete_confirmation')
+        with self.assertRaises(Unauthorized):
+            browser.find('Delete').click()

@@ -1,60 +1,48 @@
-from collective.deletepermission import testing
+from AccessControl import getSecurityManager
+from collective.deletepermission.tests.base import FunctionalTestCase
 from ftw.builder import Builder
 from ftw.builder import create
-from plone.app.testing import TEST_USER_ID
-from plone.app.testing import TEST_USER_NAME
-from plone.app.testing import login
-from plone.app.testing import setRoles
-from unittest2 import TestCase
 from zExceptions import Unauthorized
 
 
-class TestDeleeting(TestCase):
-    layer = testing.COLLECTIVE_DELETEPERMISSION_INTEGRATION_TESTING
+class TestDeleeting(FunctionalTestCase):
 
     def setUp(self):
-        setRoles(self.layer['portal'], TEST_USER_ID, ['Contributor'])
-        login(self.layer['portal'], TEST_USER_NAME)
+        self.contributor = create(Builder('user').with_roles('Contributor'))
+        self.parent = create(Builder('folder'))
+        self.child = create(Builder('folder').within(self.parent))
 
     def test_delete_possible_with_both_permissions(self):
-        parent = create(Builder('folder'))
-        child = create(Builder('folder').within(parent))
-
-        parent.manage_permission('Delete objects',
+        self.parent.manage_permission('Delete objects',
                                  roles=['Contributor'], acquire=False)
-        child.manage_permission('Delete portal content',
+        self.child.manage_permission('Delete portal content',
                                 roles=['Contributor'], acquire=False)
 
-        self.assertIn(child.getId(), parent.objectIds())
-        parent.manage_delObjects([child.getId()])
-        self.assertNotIn(child.getId(), parent.objectIds())
+        with self.user(self.contributor):
+            self.assertIn(self.child.getId(), self.parent.objectIds())
+            self.parent.manage_delObjects([self.child.getId()])
+            self.assertNotIn(self.child.getId(), self.parent.objectIds())
 
     def test_delete_unauthorized_when_no_permission_on_child(self):
-        parent = create(Builder('folder'))
-        child = create(Builder('folder').within(parent))
+        self.parent.manage_permission('Delete objects',
+                                      roles=['Contributor'], acquire=False)
+        self.child.manage_permission('Delete portal content',
+                                     roles=[], acquire=False)
 
-        parent.manage_permission('Delete objects',
-                                 roles=['Contributor'], acquire=False)
-        child.manage_permission('Delete portal content',
-                                roles=[], acquire=False)
-
-        with self.assertRaises(Unauthorized):
-            parent.manage_delObjects([child.getId()])
+        with self.user(self.contributor):
+            with self.assertRaises(Unauthorized):
+                self.parent.manage_delObjects([self.child.getId()])
 
     def test_delete_unauthorized_when_no_permission_on_parent(self):
-        parent = create(Builder('folder'))
-        child = create(Builder('folder').within(parent))
+        with self.user(self.contributor):
+            checkPermission = getSecurityManager().checkPermission
+            self.assertTrue(checkPermission('Delete objects', self.parent))
 
-        from AccessControl import getSecurityManager
-        sm = getSecurityManager()
-        self.assertEqual(1, sm.checkPermission('Delete objects', parent))
+            self.parent.manage_permission('Delete objects',
+                                          roles=[], acquire=False)
+            self.child.manage_permission('Delete portal content',
+                                         roles=['Contributor'], acquire=False)
 
-        parent.manage_permission('Delete objects',
-                                 roles=[], acquire=False)
-        child.manage_permission('Delete portal content',
-                                roles=['Contributor'], acquire=False)
-
-        self.assertEqual(None, sm.checkPermission('Delete objects', parent))
-
-        with self.assertRaises(Unauthorized):
-            parent.manage_delObjects([child.getId()])
+            self.assertFalse(checkPermission('Delete objects', self.parent))
+            with self.assertRaises(Unauthorized):
+                self.parent.manage_delObjects([self.child.getId()])

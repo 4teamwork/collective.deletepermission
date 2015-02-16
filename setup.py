@@ -18,6 +18,7 @@ tests_require = [
     'unittest2',
     'zope.configuration',
     'ftw.builder',
+    'ftw.testbrowser',
     'plone.app.dexterity',
     ]
 
