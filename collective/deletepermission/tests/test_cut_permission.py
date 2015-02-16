@@ -1,28 +1,30 @@
+from collective.deletepermission.tests.base import duplicate_with_dexterity
 from collective.deletepermission.tests.base import FunctionalTestCase
 from ftw.builder import Builder
 from ftw.builder import create
 from OFS.CopySupport import CopyError
 
 
+@duplicate_with_dexterity
 class TestCorrectPermissions(FunctionalTestCase):
 
     def setUp(self):
         self.user_a = create(Builder('user').with_userid('usera'))
         self.user_b = create(Builder('user').with_userid('userb'))
 
-        self.folder = create(Builder('folder').titled('rootfolder'))
+        self.folder = create(self.folder_builder().titled(u'rootfolder'))
         self.set_local_roles(self.folder, self.user_a, 'Contributor')
         self.set_local_roles(self.folder, self.user_b, 'Contributor')
 
         with self.user(self.user_a):
-            self.folder_a = create(Builder('folder').within(self.folder)
-                                   .with_id('folder-a'))
-            self.doc_a = create(Builder('document').within(self.folder_a)
-                                .with_id('doc-a'))
+            self.folder_a = create(self.folder_builder().within(self.folder)
+                                   .titled(u'folder-a'))
+            self.doc_a = create(self.folder_builder().within(self.folder_a)
+                                .titled(u'doc-a'))
 
         with self.user(self.user_b):
-            self.doc_b = create(Builder('document').within(self.folder_a)
-                                .with_id('doc-b'))
+            self.doc_b = create(self.folder_builder().within(self.folder_a)
+                                .titled(u'doc-b'))
 
     def test_usera_cut_folder(self):
         """usera should be able to cut his own folder

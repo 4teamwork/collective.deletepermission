@@ -1,3 +1,4 @@
+from collective.deletepermission.tests.base import duplicate_with_dexterity
 from collective.deletepermission.tests.base import FunctionalTestCase
 from ftw.builder import Builder
 from ftw.builder import create
@@ -8,6 +9,7 @@ from ftw.testbrowser.pages import statusmessages
 import transaction
 
 
+@duplicate_with_dexterity
 class TestFactoryPatch(FunctionalTestCase):
 
     @browsing
@@ -17,7 +19,7 @@ class TestFactoryPatch(FunctionalTestCase):
         transaction.commit()
 
         browser.login(user).open()
-        factoriesmenu.add('Folder')
+        factoriesmenu.add(self.folder_name)
         browser.fill({'Title': 'Foo'}).save()
         statusmessages.assert_no_error_messages()
-        self.assertEquals(('folder_listing', 'folder'), plone.view_and_portal_type())
+        self.assertEquals('folder_listing', plone.view())
