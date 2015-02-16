@@ -58,10 +58,10 @@ def duplicate_with_dexterity(klass):
     """Decorator for duplicating a test suite to be ran against dexterity contents.
     """
     class DexterityTestSuite(klass):
-        folder_name = 'dexterity.folder'
+        folder_name = 'dxfolder'
 
         def folder_builder(self):
-            return Builder('dexterity.folder')
+            return Builder('dxfolder')
 
         def is_dexterity_test(self):
             return True

@@ -21,7 +21,7 @@ class TestCopy(FunctionalTestCase):
         self.revoke_permission('Delete portal content', on=folder)
         folder.object_copy()
         if self.is_dexterity_test():
-            self.assertEquals([u'dexterity-folder copied.'], self.get_status_messages())
+            self.assertEquals([u'dxfolder copied.'], self.get_status_messages())
         else:
             self.assertEquals([u'folder copied.'], self.get_status_messages())
 

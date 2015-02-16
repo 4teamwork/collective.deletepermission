@@ -1,8 +1,8 @@
 <?xml version="1.0"?>
-<object name="dexterity.folder"
+<object name="dxfolder"
    meta_type="Dexterity FTI">
   <!-- Basic metadata -->
-  <property name="title">dexterity.folder</property>
+  <property name="title">dxfolder</property>
   <property name="description">A folder</property>
   <property name="icon_expr">string:${portal_url}/folder_icon.png</property>
   <property name="factory">collective.deletepermission</property>
@@ -13,7 +13,7 @@
 
   <!-- schema and class used for content items -->
   <property name="schema">collective.deletepermission.tests.dexterity_folder.IDXFolder</property>
-  <property name="klass">collective.deletepermission.tests.dexterity_folder.DXFolder</property>
+  <property name="klass">plone.dexterity.content.Container</property>
 
   <property name="behaviors">
     <element value="plone.app.content.interfaces.INameFromTitle" />
