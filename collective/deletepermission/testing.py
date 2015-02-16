@@ -61,10 +61,6 @@ class CollectiveDeletepermissionDXLayer(PloneSandboxLayer):
 COLLECTIVE_DELETEPERMISSION_FIXTURE = CollectiveDeletepermissionLayer()
 COLLECTIVE_DELETEPERMISSION_DX_FIXTURE = CollectiveDeletepermissionDXLayer()
 
-COLLECTIVE_DELETEPERMISSION_INTEGRATION_TESTING = IntegrationTesting(
-    bases=(COLLECTIVE_DELETEPERMISSION_FIXTURE, ),
-    name="CollectiveDeletepermission:Integration")
-
 COLLECTIVE_DELETEPERMISSION_DX_INTEGRATION_TESTING = IntegrationTesting(
     bases=(COLLECTIVE_DELETEPERMISSION_DX_FIXTURE, ),
     name="CollectiveDeletepermissionDX:Integration")

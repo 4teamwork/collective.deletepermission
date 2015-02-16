@@ -1,4 +1,4 @@
-from collective.deletepermission.testing import COLLECTIVE_DELETEPERMISSION_INTEGRATION_TESTING
+from collective.deletepermission.testing import COLLECTIVE_DELETEPERMISSION_FUNCTIONAL_TESTING
 from unittest2 import TestCase
 from Products.CMFCore.utils import getToolByName
 from plone.app.testing import login
@@ -8,7 +8,7 @@ from AccessControl import Unauthorized
 
 class TestCorrectPermissions(TestCase):
 
-    layer = COLLECTIVE_DELETEPERMISSION_INTEGRATION_TESTING
+    layer = COLLECTIVE_DELETEPERMISSION_FUNCTIONAL_TESTING
 
     def setUp(self):
         self.portal = self.layer['portal']

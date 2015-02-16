@@ -10,7 +10,7 @@ from zExceptions import Unauthorized
 
 
 class TestDeleeting(TestCase):
-    layer = testing.COLLECTIVE_DELETEPERMISSION_INTEGRATION_TESTING
+    layer = testing.COLLECTIVE_DELETEPERMISSION_FUNCTIONAL_TESTING
 
     def setUp(self):
         setRoles(self.layer['portal'], TEST_USER_ID, ['Contributor'])

@@ -12,7 +12,7 @@ from unittest2 import TestCase
 
 class TestCopy(TestCase):
 
-    layer = testing.COLLECTIVE_DELETEPERMISSION_INTEGRATION_TESTING
+    layer = testing.COLLECTIVE_DELETEPERMISSION_FUNCTIONAL_TESTING
 
     def setUp(self):
         self.portal = self.layer['portal']
