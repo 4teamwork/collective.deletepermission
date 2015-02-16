@@ -1,18 +1,14 @@
 from AccessControl import Unauthorized
-from Products.statusmessages.interfaces import IStatusMessage
-from collective.deletepermission import testing
+from collective.deletepermission.tests.base import FunctionalTestCase
 from ftw.builder import Builder
 from ftw.builder import create
-from plone.app.testing import TEST_USER_ID
-from plone.app.testing import TEST_USER_NAME
 from plone.app.testing import login
 from plone.app.testing import setRoles
-from unittest2 import TestCase
+from plone.app.testing import TEST_USER_ID
+from plone.app.testing import TEST_USER_NAME
 
 
-class TestCopy(TestCase):
-
-    layer = testing.COLLECTIVE_DELETEPERMISSION_FUNCTIONAL_TESTING
+class TestCopy(FunctionalTestCase):
 
     def setUp(self):
         self.portal = self.layer['portal']
@@ -30,11 +26,3 @@ class TestCopy(TestCase):
         self.revoke_permission('Copy or Move', on=folder)
         with self.assertRaises(Unauthorized):
             folder.object_copy()
-
-    def revoke_permission(self, permission, on):
-        on.manage_permission(permission, roles=[], acquire=False)
-
-    def get_status_messages(self):
-        request = self.layer['request']
-        messages = [msg.message for msg in IStatusMessage(request).show()]
-        return messages
