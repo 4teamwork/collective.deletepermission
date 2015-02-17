@@ -1,27 +1,29 @@
 from AccessControl import Unauthorized
+from collective.deletepermission.tests.base import duplicate_with_dexterity
 from collective.deletepermission.tests.base import FunctionalTestCase
 from ftw.builder import Builder
 from ftw.builder import create
 from ftw.testbrowser import browsing
 
 
+@duplicate_with_dexterity
 class TestOnlyFiles(FunctionalTestCase):
 
     def setUp(self):
         self.user_a = create(Builder('user').with_userid('usera'))
 
-        self.folder = create(Builder('folder').titled('rootfolder'))
+        self.folder = create(self.folder_builder().titled(u'rootfolder'))
         self.set_local_roles(self.folder, self.user_a, 'Contributor')
 
-        self.subfolder = create(Builder('folder').titled('subfolder')
+        self.subfolder = create(self.folder_builder().titled(u'subfolder')
                                 .within(self.folder))
 
         with self.user(self.user_a):
-            self.firstleveldoc = create(Builder('document')
-                                        .with_id('doc-firstleveldoc')
+            self.firstleveldoc = create(self.folder_builder()
+                                        .titled(u'doc-firstleveldoc')
                                         .within(self.folder))
-            self.secondleveldoc = create(Builder('document')
-                                         .with_id('doc-secondleveldoc')
+            self.secondleveldoc = create(self.folder_builder()
+                                         .titled(u'doc-secondleveldoc')
                                          .within(self.subfolder))
 
     @browsing

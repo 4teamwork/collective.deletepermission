@@ -38,6 +38,24 @@
       />
 
   <monkey:patch
+      description="patch manage_cutObjects protection role."
+      class="Products.Archetypes.BaseFolder.BaseFolderMixin"
+      original="manage_cutObjects__roles__"
+      replacement=".cut_object.dummy_replacement"
+      handler=".cut_object.apply_delete_objects_permission_role"
+      />
+
+  <configure zcml:condition="installed plone.app.dexterity">
+      <monkey:patch
+          description="Dexterity: patch manage_cutObjects protection role."
+          class="plone.dexterity.content.Container"
+          original="manage_cutObjects__roles__"
+          replacement=".cut_object.dummy_replacement"
+          handler=".cut_object.apply_delete_objects_permission_role"
+          />
+  </configure>
+
+  <monkey:patch
       description="Patch cb_isCopyable"
       class="OFS.CopySupport.CopySource"
       original="cb_isCopyable"

@@ -1,3 +1,4 @@
+from collective.deletepermission.tests.base import duplicate_with_dexterity
 from collective.deletepermission.tests.base import FunctionalTestCase
 from ftw.builder import Builder
 from ftw.builder import create
@@ -5,6 +6,7 @@ from ftw.testbrowser import browsing
 import transaction
 
 
+@duplicate_with_dexterity
 class TestDeleteAction(FunctionalTestCase):
 
     def setUp(self):
@@ -13,9 +15,9 @@ class TestDeleteAction(FunctionalTestCase):
         self.john = create(Builder('user').named('John', 'Doe')
                            .with_roles('Member', 'Contributor'))
         with self.user(self.hugo):
-            self.container = create(Builder('folder'))
+            self.container = create(self.folder_builder())
         with self.user(self.john):
-            self.content = create(Builder('folder').within(self.container))
+            self.content = create(self.folder_builder().within(self.container))
 
     @browsing
     def test_user_can_delete_own_contents(self, browser):
@@ -34,6 +36,7 @@ class TestDeleteAction(FunctionalTestCase):
                          ' without "Delete objects" on the parent.')
 
 
+@duplicate_with_dexterity
 class TestCutAction(FunctionalTestCase):
 
     def setUp(self):
@@ -42,9 +45,9 @@ class TestCutAction(FunctionalTestCase):
         self.john = create(Builder('user').named('John', 'Doe')
                            .with_roles('Member', 'Contributor'))
         with self.user(self.hugo):
-            self.container = create(Builder('folder'))
+            self.container = create(self.folder_builder())
         with self.user(self.john):
-            self.content = create(Builder('folder').within(self.container))
+            self.content = create(self.folder_builder().within(self.container))
 
     @browsing
     def test_user_can_cut_own_contents(self, browser):

@@ -1,16 +1,18 @@
 from AccessControl import getSecurityManager
+from collective.deletepermission.tests.base import duplicate_with_dexterity
 from collective.deletepermission.tests.base import FunctionalTestCase
 from ftw.builder import Builder
 from ftw.builder import create
 from zExceptions import Unauthorized
 
 
+@duplicate_with_dexterity
 class TestDeleeting(FunctionalTestCase):
 
     def setUp(self):
         self.contributor = create(Builder('user').with_roles('Contributor'))
-        self.parent = create(Builder('folder'))
-        self.child = create(Builder('folder').within(self.parent))
+        self.parent = create(self.folder_builder())
+        self.child = create(self.folder_builder().within(self.parent))
 
     def test_delete_possible_with_both_permissions(self):
         self.parent.manage_permission('Delete objects',

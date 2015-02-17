@@ -3,6 +3,6 @@ from ftw.builder import builder_registry
 
 
 class DXFolderBuilder(DexterityBuilder):
-    portal_type = 'dexterity.folder'
+    portal_type = 'dxfolder'
 
-builder_registry.register('dexterity.folder', DXFolderBuilder)
+builder_registry.register('dxfolder', DXFolderBuilder)
