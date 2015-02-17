@@ -2,24 +2,23 @@ from setuptools import setup, find_packages
 import os
 
 version = '1.1.4.dev0'
-maintainer = "Timon Tschanz"
 
 tests_require = [
     'AccessControl',
     'Products.CMFCore',
     'Products.GenericSetup',
+    'Products.statusmessages',
     'Zope2',
-    'lxml',
-    'mechanize',
-    'plone.app.portlets',
-    'plone.app.testing',
-    'plone.testing',
-    'transaction',
-    'unittest2',
-    'zope.configuration',
     'ftw.builder',
     'ftw.testbrowser',
     'plone.app.dexterity',
+    'plone.app.portlets',
+    'plone.app.testing',
+    'plone.autoform',
+    'transaction',
+    'unittest2',
+    'zExceptions',
+    'zope.interface',
     ]
 
 
@@ -52,9 +51,8 @@ setup(name='collective.deletepermission',
         ],
 
       keywords='collective deletepermission 4teamwork ftw plone',
-      author='4teamwork GmbH',
+      author='4teamwork AG',
       author_email='mailto:info@4teamwork.ch',
-      maintainer=maintainer,
       url='https://github.com/4teamwork/collective.deletepermission',
       license='GPL2',
 
@@ -64,16 +62,22 @@ setup(name='collective.deletepermission',
       zip_safe=False,
 
       install_requires=[
-          'AccessControl',
-          'Products.Archetypes',
-          'Products.CMFCore',
-          'Products.CMFPlone',
-          'Products.PythonScripts',
-          'collective.monkeypatcher',
-          'ftw.upgrade',
-          'setuptools',
-          # -*- Extra requirements: -*-
-      ],
+        'AccessControl',
+        'Acquisition',
+        'Products.Archetypes',
+        'Products.CMFCore',
+        'Products.CMFPlone',
+        'Products.GenericSetup',
+        'Products.PythonScripts',
+        'ZODB3',
+        'Zope2',
+        'collective.monkeypatcher',
+        'ftw.upgrade',
+        'setuptools',
+        'zope.container',
+        'zope.event',
+        'zope.lifecycleevent',
+        ],
 
       tests_require=tests_require,
       extras_require=extras_require,
