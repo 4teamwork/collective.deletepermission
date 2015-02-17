@@ -2,7 +2,6 @@ from setuptools import setup, find_packages
 import os
 
 version = '1.1.4.dev0'
-maintainer = "Timon Tschanz"
 
 tests_require = [
     'AccessControl',
@@ -52,9 +51,8 @@ setup(name='collective.deletepermission',
         ],
 
       keywords='collective deletepermission 4teamwork ftw plone',
-      author='4teamwork GmbH',
+      author='4teamwork AG',
       author_email='mailto:info@4teamwork.ch',
-      maintainer=maintainer,
       url='https://github.com/4teamwork/collective.deletepermission',
       license='GPL2',
 
@@ -64,16 +62,15 @@ setup(name='collective.deletepermission',
       zip_safe=False,
 
       install_requires=[
-          'AccessControl',
-          'Products.Archetypes',
-          'Products.CMFCore',
-          'Products.CMFPlone',
-          'Products.PythonScripts',
-          'collective.monkeypatcher',
-          'ftw.upgrade',
-          'setuptools',
-          # -*- Extra requirements: -*-
-      ],
+        'AccessControl',
+        'Products.Archetypes',
+        'Products.CMFCore',
+        'Products.CMFPlone',
+        'Products.PythonScripts',
+        'collective.monkeypatcher',
+        'ftw.upgrade',
+        'setuptools',
+        ],
 
       tests_require=tests_require,
       extras_require=extras_require,
