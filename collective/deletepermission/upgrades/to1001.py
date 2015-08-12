@@ -1,8 +1,7 @@
-from ftw.upgrade import UpgradeStep
 
-
-class UpdateDeleteAction(UpgradeStep):
-
-    def __call__(self):
-        self.setup_install_profile(
-            'profile-collective.deletepermission.upgrades:1001')
+def upgrade(setup_context):
+    setup_context.runImportStepFromProfile(
+        'profile-collective.deletepermission.upgrades:1001',
+        'actions',
+        run_dependencies=False,
+        purge_old=False)
