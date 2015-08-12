@@ -1,7 +1,7 @@
 Changelog
 =========
 
-1.2.1 (unreleased)
+1.2.1 (2015-08-12)
 ------------------
 
 - Remove dependency to ftw.upgrade.
