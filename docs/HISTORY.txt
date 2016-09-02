@@ -1,7 +1,7 @@
 Changelog
 =========
 
-1.2.2 (unreleased)
+1.3.0 (2016-09-02)
 ------------------
 
 - Also patch manage_pasteObjects security deceleration the same way as manage_cutObjects.
