@@ -18,9 +18,11 @@ Implementation details
 
 This package monkey patches:
 
-- ``manage_delObjects`` of AT BaseFolder
+- ``manage_delObjects`` of AT BaseFolder and Dexterity Container
 
-- ``manage_cutObjects__roles__`` of AT BaseFolderMixin
+- ``manage_cutObjects__roles__`` of AT BaseFolderMixin and Dexterity Container
+
+- ``manage_pasteObjects__roles__`` of AT BaseFolderMixin and Dexterity Container
 
 - ``cb_userHasCopyOrMovePermissionchecks`` of OFS CopySupport
 

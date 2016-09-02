@@ -3,7 +3,7 @@ from AccessControl.Permissions import copy_or_move
 
 
 # origin: OFS.CopySupport.cb_isCopyable
-# Change: the cb_userHasCopyOrMovePermission is patched in .cut_object
+# Change: the cb_userHasCopyOrMovePermission is patched in .cut_paste_object
 # and requires "Delete portal content" so that cutting works as it is
 # excpected.
 # Since copying should not require "Delete portal content" we directly
