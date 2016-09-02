@@ -5,7 +5,7 @@ Changelog
 ------------------
 
 - Also patch manage_pasteObjects security deceleration the same way as manage_cutObjects.
-  This way it's possible to add paste object in a container, without Modify portal content
+  This way it's possible to paste objects in a container, without Modify portal content
   permission on the container itself.
   [mathias.leimgruber]
 
