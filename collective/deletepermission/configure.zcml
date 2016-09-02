@@ -34,15 +34,15 @@
       description="Patch cb_userHasCopyOrMovePermissions"
       class="OFS.CopySupport.CopySource"
       original="cb_userHasCopyOrMovePermission"
-      replacement="collective.deletepermission.cut_object.cb_userHasCopyOrMovePermission"
+      replacement="collective.deletepermission.cut_paste_object.cb_userHasCopyOrMovePermission"
       />
 
   <monkey:patch
       description="patch manage_cutObjects protection role."
       class="Products.Archetypes.BaseFolder.BaseFolderMixin"
       original="manage_cutObjects__roles__"
-      replacement=".cut_object.dummy_replacement"
-      handler=".cut_object.apply_delete_objects_permission_role"
+      replacement=".cut_paste_object.dummy_replacement"
+      handler=".cut_paste_object.apply_delete_objects_permission_role"
       />
 
   <configure zcml:condition="installed plone.app.dexterity">
@@ -50,8 +50,26 @@
           description="Dexterity: patch manage_cutObjects protection role."
           class="plone.dexterity.content.Container"
           original="manage_cutObjects__roles__"
-          replacement=".cut_object.dummy_replacement"
-          handler=".cut_object.apply_delete_objects_permission_role"
+          replacement=".cut_paste_object.dummy_replacement"
+          handler=".cut_paste_object.apply_delete_objects_permission_role"
+          />
+  </configure>
+
+  <monkey:patch
+      description="patch manage_pasteObjects protection role."
+      class="Products.Archetypes.BaseFolder.BaseFolderMixin"
+      original="manage_pasteObjects__roles__"
+      replacement=".cut_paste_object.dummy_replacement"
+      handler=".cut_paste_object.apply_delete_objects_permission_role"
+      />
+
+  <configure zcml:condition="installed plone.app.dexterity">
+      <monkey:patch
+          description="Dexterity: patch manage_pasteObjects protection role."
+          class="plone.dexterity.content.Container"
+          original="manage_pasteObjects__roles__"
+          replacement=".cut_paste_object.dummy_replacement"
+          handler=".cut_paste_object.apply_delete_objects_permission_role"
           />
   </configure>
 

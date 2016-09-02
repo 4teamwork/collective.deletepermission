@@ -83,4 +83,5 @@ class TestCorrectPermissions(FunctionalTestCase):
         """Cutting "None" should throw a ValueError."""
 
         with self.user(self.user_a):
-            self.assertRaises(ValueError, self.folder_a.manage_cutObjects, None)
+            self.assertRaises(
+                ValueError, self.folder_a.manage_cutObjects, None)
