@@ -22,5 +22,14 @@
         provides="Products.GenericSetup.interfaces.EXTENSION"
         />
 
+    <!-- 1001 -> 1002 -->
+    <genericsetup:upgradeStep
+        title="Synchronize delete permission role settings for site root"
+        description=""
+        source="1001"
+        destination="1002"
+        handler="collective.deletepermission.upgrades.to1002.upgrade"
+        profile="collective.deletepermission:default"
+        />
 
 </configure>
