@@ -3,6 +3,7 @@
     <permissions>
 
         <permission name="Delete portal content" acquire="True">
+            <role name="Site Administrator" />
             <role name="Manager" />
             <role name="Owner" />
             <role name="Editor" />
