@@ -3,11 +3,20 @@
     <permissions>
 
         <permission name="Delete portal content" acquire="True">
+            <role name="Contributor" />
+            <role name="Site Administrator" />
             <role name="Manager" />
             <role name="Owner" />
             <role name="Editor" />
         </permission>
 
+        <!--
+            The idea is that all roles with "Delete objects" permission should
+            also have the "Delete portal content" permission in order to
+            actually be able to delete things.
+            This principle applies to the site root settings and may be changed
+            by workflows, depending on the use case.
+        -->
         <permission name="Delete objects" acquire="True">
             <role name="Contributor" />
             <role name="Site Administrator" />
