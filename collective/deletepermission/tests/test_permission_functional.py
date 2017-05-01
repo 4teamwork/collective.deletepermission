@@ -1,5 +1,4 @@
 from collective.deletepermission.tests.base import duplicate_with_dexterity
-from AccessControl import Unauthorized
 from collective.deletepermission.tests.base import FunctionalTestCase
 from ftw.builder import Builder
 from ftw.builder import create
@@ -96,7 +95,7 @@ class TestCorrectPermissions(FunctionalTestCase):
         """
         browser.login(self.user_b).open(self.folder_a,
                                         view='delete_confirmation')
-        with self.assertRaises(Unauthorized):
+        with browser.expect_unauthorized():
             browser.find("Delete").click()
 
     @browsing
@@ -117,7 +116,7 @@ class TestCorrectPermissions(FunctionalTestCase):
         """
         browser.login(self.user_b).open(self.folder_a)
         self.assertNotIn('Rename', self.get_actions())
-        with self.assertRaises(Unauthorized):
+        with browser.expect_unauthorized():
             browser.open(self.folder_a, view='object_rename')
 
     @browsing
@@ -184,7 +183,7 @@ class TestCorrectPermissions(FunctionalTestCase):
         Check if User B can remove User A's Document. Should not be possible.
         """
         browser.login(self.user_b).open(self.doc_a, view='delete_confirmation')
-        with self.assertRaises(Unauthorized):
+        with browser.expect_unauthorized():
             browser.find('Delete').click()
 
     @browsing
@@ -205,7 +204,7 @@ class TestCorrectPermissions(FunctionalTestCase):
         """
         browser.login(self.user_b).open(self.doc_a)
         self.assertNotIn('Rename', self.get_actions())
-        with self.assertRaises(Unauthorized):
+        with browser.expect_unauthorized():
             browser.open(self.folder_a, view='object_rename')
 
     @browsing

@@ -1,4 +1,3 @@
-from AccessControl import Unauthorized
 from collective.deletepermission.tests.base import duplicate_with_dexterity
 from collective.deletepermission.tests.base import FunctionalTestCase
 from ftw.builder import Builder
@@ -42,5 +41,5 @@ class TestOnlyFiles(FunctionalTestCase):
     def test_delete_subfolder(self, browser):
         """Test if we can delete the subfolder. This should not be the case."""
         browser.login(self.user_a).open(self.subfolder, view='delete_confirmation')
-        with self.assertRaises(Unauthorized):
+        with browser.expect_unauthorized():
             browser.find('Delete').click()
