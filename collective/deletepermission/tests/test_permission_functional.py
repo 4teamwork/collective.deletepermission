@@ -1,3 +1,4 @@
+from collective.deletepermission.testing import IS_PLONE_5_OR_GREATER
 from collective.deletepermission.tests.base import duplicate_with_dexterity
 from collective.deletepermission.tests.base import FunctionalTestCase
 from ftw.builder import Builder
@@ -6,6 +7,7 @@ from ftw.testbrowser import browsing
 from ftw.testbrowser.pages import folder_contents
 from ftw.testbrowser.pages import plone
 from ftw.testbrowser.pages import statusmessages
+from unittest2 import skipIf
 
 
 @duplicate_with_dexterity
@@ -207,6 +209,7 @@ class TestCorrectPermissions(FunctionalTestCase):
         with browser.expect_unauthorized():
             browser.open(self.folder_a, view='object_rename')
 
+    @skipIf(IS_PLONE_5_OR_GREATER, '@@folder_contents in Plone 5 is JS-only and our testbrowser cannot handle JS.')
     @browsing
     def test_usera_remove_docs_folder_contents(self, browser):
         """Check if we are able to remove files over folder_contents."""
@@ -215,6 +218,7 @@ class TestCorrectPermissions(FunctionalTestCase):
         folder_contents.form().find('Delete').click()
         self.assertEqual(['Item(s) deleted.'], statusmessages.info_messages())
 
+    @skipIf(IS_PLONE_5_OR_GREATER, '@@folder_contents in Plone 5 is JS-only and our testbrowser cannot handle JS.')
     @browsing
     def test_usera_cuts_docs_folder_contents(self, browser):
         """Check if we are able to cut docs over folder_contents."""
@@ -225,6 +229,7 @@ class TestCorrectPermissions(FunctionalTestCase):
                           'warning': [],
                           'error': []}, statusmessages.messages())
 
+    @skipIf(IS_PLONE_5_OR_GREATER, '@@folder_contents in Plone 5 is JS-only and our testbrowser cannot handle JS.')
     @browsing
     def test_usera_renames_docs_folder_contents(self, browser):
         """Check if we are able to rename docs over folder_contents."""
@@ -235,6 +240,7 @@ class TestCorrectPermissions(FunctionalTestCase):
         self.assertEqual('doc-a', browser.css('#doc-a_id').first.value)
         self.assertEqual('doc-b', browser.css('#doc-b_id').first.value)
 
+    @skipIf(IS_PLONE_5_OR_GREATER, '@@folder_contents in Plone 5 is JS-only and our testbrowser cannot handle JS.')
     @browsing
     def test_userb_remove_docs_folder_contents(self, browser):
         """Check if the permission also works when we delete over
@@ -249,6 +255,7 @@ class TestCorrectPermissions(FunctionalTestCase):
              'warning': [],
              'error': []}, statusmessages.messages())
 
+    @skipIf(IS_PLONE_5_OR_GREATER, '@@folder_contents in Plone 5 is JS-only and our testbrowser cannot handle JS.')
     @browsing
     def test_userb_cuts_docs_folder_contents(self, browser):
         """Check if the permission also works when we cut over
@@ -262,6 +269,7 @@ class TestCorrectPermissions(FunctionalTestCase):
                           'error': ['One or more items not moveable.']},
                          statusmessages.messages())
 
+    @skipIf(IS_PLONE_5_OR_GREATER, '@@folder_contents in Plone 5 is JS-only and our testbrowser cannot handle JS.')
     @browsing
     def test_userb_renames_docs_folder_contents(self, browser):
         """Check if the permission also works when we rename over
