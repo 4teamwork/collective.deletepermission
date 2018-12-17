@@ -1,3 +1,4 @@
+from collective.deletepermission.testing import IS_PLONE_5_OR_GREATER
 from collective.deletepermission.tests.base import duplicate_with_dexterity
 from collective.deletepermission.tests.base import FunctionalTestCase
 from ftw.builder import Builder
@@ -6,6 +7,7 @@ from ftw.testbrowser import browsing
 from ftw.testbrowser.pages import folder_contents
 from ftw.testbrowser.pages import plone
 from ftw.testbrowser.pages import statusmessages
+from unittest2 import skipIf
 
 
 @duplicate_with_dexterity
@@ -52,8 +54,11 @@ class TestCorrectPermissions(FunctionalTestCase):
         """
         browser.login(self.user_b).open(self.doc_b)
         browser.find('Rename').click()
-        browser.fill({'new_ids:list': 'doc-b-renamed'}
-                     ).find('Rename All').click()
+        if IS_PLONE_5_OR_GREATER:
+            browser.fill({'New Short Name': 'doc-b-renamed'}).find('Rename').click()
+        else:
+            browser.fill({'new_ids:list': 'doc-b-renamed'}
+                         ).find('Rename All').click()
         statusmessages.assert_no_error_messages()
         self.assertEquals(self.folder_a.absolute_url() + '/doc-b-renamed',
                           browser.url)
@@ -82,8 +87,11 @@ class TestCorrectPermissions(FunctionalTestCase):
         """
         browser.login(self.user_a).open(self.folder_a)
         browser.find('Rename').click()
-        browser.fill({'new_ids:list': 'folder-a-renamed'}
-                     ).find('Rename All').click()
+        if IS_PLONE_5_OR_GREATER:
+            browser.fill({'New Short Name': 'folder-a-renamed'}).find('Rename').click()
+        else:
+            browser.fill({'new_ids:list': 'folder-a-renamed'}
+                         ).find('Rename All').click()
         statusmessages.assert_no_error_messages()
         self.assertEquals(self.folder.absolute_url() + '/folder-a-renamed',
                           browser.url)
@@ -105,9 +113,13 @@ class TestCorrectPermissions(FunctionalTestCase):
         """
         browser.login(self.user_b).open(self.folder_a)
         self.assertNotIn('Cut', self.get_actions())
-        browser.open(self.folder_a, view='object_cut')
-        self.assertEquals(['folder-a is not moveable.'],
-                          statusmessages.error_messages())
+        if IS_PLONE_5_OR_GREATER:
+            with browser.expect_unauthorized():
+                browser.open(self.folder_a, view='object_cut')
+        else:
+            browser.open(self.folder_a, view='object_cut')
+            self.assertEquals(['folder-a is not moveable.'],
+                              statusmessages.error_messages())
 
     @browsing
     def test_userb_rename_folder(self, browser):
@@ -142,8 +154,11 @@ class TestCorrectPermissions(FunctionalTestCase):
         """
         browser.login(self.user_a).open(self.doc_a)
         browser.find('Rename').click()
-        browser.fill({'new_ids:list': 'doc-a-renamed',
-                      }).find('Rename All').click()
+        if IS_PLONE_5_OR_GREATER:
+            browser.fill({'New Short Name': 'doc-a-renamed'}).find('Rename').click()
+        else:
+            browser.fill({'new_ids:list': 'doc-a-renamed',
+                          }).find('Rename All').click()
         statusmessages.assert_no_error_messages()
         self.assertEquals(self.folder_a.absolute_url() + '/doc-a-renamed',
                           browser.url)
@@ -171,8 +186,11 @@ class TestCorrectPermissions(FunctionalTestCase):
         """
         browser.login(self.user_a).open(self.doc_b)
         browser.find('Rename').click()
-        browser.fill({'new_ids:list': 'doc-b-renamed',
-                      }).find('Rename All').click()
+        if IS_PLONE_5_OR_GREATER:
+            browser.fill({'New Short Name': 'doc-b-renamed'}).find('Rename').click()
+        else:
+            browser.fill({'new_ids:list': 'doc-b-renamed',
+                          }).find('Rename All').click()
         statusmessages.assert_no_error_messages()
         self.assertEquals(self.folder_a.absolute_url() + '/doc-b-renamed',
                           browser.url)
@@ -193,9 +211,13 @@ class TestCorrectPermissions(FunctionalTestCase):
         """
         browser.login(self.user_b).open(self.doc_a)
         self.assertNotIn('Cut', self.get_actions())
-        browser.open(self.doc_a, view='object_cut')
-        self.assertEquals(['doc-a is not moveable.'],
-                          statusmessages.error_messages())
+        if IS_PLONE_5_OR_GREATER:
+            with browser.expect_unauthorized():
+                browser.open(self.doc_a, view='object_cut')
+        else:
+            browser.open(self.doc_a, view='object_cut')
+            self.assertEquals(['doc-a is not moveable.'],
+                              statusmessages.error_messages())
 
     @browsing
     def test_userb_rename_doc_a(self, browser):
@@ -207,6 +229,7 @@ class TestCorrectPermissions(FunctionalTestCase):
         with browser.expect_unauthorized():
             browser.open(self.folder_a, view='object_rename')
 
+    @skipIf(IS_PLONE_5_OR_GREATER, '@@folder_contents in Plone 5 is JS-only and our testbrowser cannot handle JS.')
     @browsing
     def test_usera_remove_docs_folder_contents(self, browser):
         """Check if we are able to remove files over folder_contents."""
@@ -215,6 +238,7 @@ class TestCorrectPermissions(FunctionalTestCase):
         folder_contents.form().find('Delete').click()
         self.assertEqual(['Item(s) deleted.'], statusmessages.info_messages())
 
+    @skipIf(IS_PLONE_5_OR_GREATER, '@@folder_contents in Plone 5 is JS-only and our testbrowser cannot handle JS.')
     @browsing
     def test_usera_cuts_docs_folder_contents(self, browser):
         """Check if we are able to cut docs over folder_contents."""
@@ -225,6 +249,7 @@ class TestCorrectPermissions(FunctionalTestCase):
                           'warning': [],
                           'error': []}, statusmessages.messages())
 
+    @skipIf(IS_PLONE_5_OR_GREATER, '@@folder_contents in Plone 5 is JS-only and our testbrowser cannot handle JS.')
     @browsing
     def test_usera_renames_docs_folder_contents(self, browser):
         """Check if we are able to rename docs over folder_contents."""
@@ -235,6 +260,7 @@ class TestCorrectPermissions(FunctionalTestCase):
         self.assertEqual('doc-a', browser.css('#doc-a_id').first.value)
         self.assertEqual('doc-b', browser.css('#doc-b_id').first.value)
 
+    @skipIf(IS_PLONE_5_OR_GREATER, '@@folder_contents in Plone 5 is JS-only and our testbrowser cannot handle JS.')
     @browsing
     def test_userb_remove_docs_folder_contents(self, browser):
         """Check if the permission also works when we delete over
@@ -249,6 +275,7 @@ class TestCorrectPermissions(FunctionalTestCase):
              'warning': [],
              'error': []}, statusmessages.messages())
 
+    @skipIf(IS_PLONE_5_OR_GREATER, '@@folder_contents in Plone 5 is JS-only and our testbrowser cannot handle JS.')
     @browsing
     def test_userb_cuts_docs_folder_contents(self, browser):
         """Check if the permission also works when we cut over
@@ -262,6 +289,7 @@ class TestCorrectPermissions(FunctionalTestCase):
                           'error': ['One or more items not moveable.']},
                          statusmessages.messages())
 
+    @skipIf(IS_PLONE_5_OR_GREATER, '@@folder_contents in Plone 5 is JS-only and our testbrowser cannot handle JS.')
     @browsing
     def test_userb_renames_docs_folder_contents(self, browser):
         """Check if the permission also works when we rename over

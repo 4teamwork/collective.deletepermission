@@ -3,9 +3,8 @@ from AccessControl.SecurityManagement import setSecurityManager
 from collective.deletepermission import testing
 from contextlib import contextmanager
 from ftw.builder import Builder
-from ftw.testbrowser import browser
+from ftw.testbrowser.pages import editbar
 from plone.app.testing import login
-from Products.statusmessages.interfaces import IStatusMessage
 from unittest2 import TestCase
 import sys
 import transaction
@@ -18,6 +17,7 @@ class FunctionalTestCase(TestCase):
 
     def revoke_permission(self, permission, on):
         on.manage_permission(permission, roles=[], acquire=False)
+        transaction.commit()
 
     def set_local_roles(self, context, user, *roles):
         if hasattr(user, 'getUserName'):
@@ -27,13 +27,8 @@ class FunctionalTestCase(TestCase):
         context.reindexObjectSecurity()
         transaction.commit()
 
-    def get_status_messages(self):
-        request = self.layer['request']
-        messages = [msg.message for msg in IStatusMessage(request).show()]
-        return messages
-
     def get_actions(self):
-        return browser.css('#plone-contentmenu-actions .actionMenuContent a').text
+        return editbar.menu_options("Actions")
 
     @contextmanager
     def user(self, username):
@@ -57,6 +52,13 @@ class FunctionalTestCase(TestCase):
 def duplicate_with_dexterity(klass):
     """Decorator for duplicating a test suite to be ran against dexterity contents.
     """
+
+    if testing.IS_PLONE_5_OR_GREATER:
+         # The default types (Folder etc.) in Plone 5 are already Dexterity.
+         # So we do not test Archetypes under Plone 5 anymore, thus we do not
+         # need to duplicate the tests.
+         return klass
+
     class DexterityTestSuite(klass):
         folder_name = 'dxfolder'
 
