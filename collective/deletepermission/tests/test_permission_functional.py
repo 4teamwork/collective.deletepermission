@@ -54,8 +54,11 @@ class TestCorrectPermissions(FunctionalTestCase):
         """
         browser.login(self.user_b).open(self.doc_b)
         browser.find('Rename').click()
-        browser.fill({'new_ids:list': 'doc-b-renamed'}
-                     ).find('Rename All').click()
+        if IS_PLONE_5_OR_GREATER:
+            browser.fill({'New Short Name': 'doc-b-renamed'}).find('Rename').click()
+        else:
+            browser.fill({'new_ids:list': 'doc-b-renamed'}
+                         ).find('Rename All').click()
         statusmessages.assert_no_error_messages()
         self.assertEquals(self.folder_a.absolute_url() + '/doc-b-renamed',
                           browser.url)
@@ -84,8 +87,11 @@ class TestCorrectPermissions(FunctionalTestCase):
         """
         browser.login(self.user_a).open(self.folder_a)
         browser.find('Rename').click()
-        browser.fill({'new_ids:list': 'folder-a-renamed'}
-                     ).find('Rename All').click()
+        if IS_PLONE_5_OR_GREATER:
+            browser.fill({'New Short Name': 'folder-a-renamed'}).find('Rename').click()
+        else:
+            browser.fill({'new_ids:list': 'folder-a-renamed'}
+                         ).find('Rename All').click()
         statusmessages.assert_no_error_messages()
         self.assertEquals(self.folder.absolute_url() + '/folder-a-renamed',
                           browser.url)
@@ -144,8 +150,11 @@ class TestCorrectPermissions(FunctionalTestCase):
         """
         browser.login(self.user_a).open(self.doc_a)
         browser.find('Rename').click()
-        browser.fill({'new_ids:list': 'doc-a-renamed',
-                      }).find('Rename All').click()
+        if IS_PLONE_5_OR_GREATER:
+            browser.fill({'New Short Name': 'doc-a-renamed'}).find('Rename').click()
+        else:
+            browser.fill({'new_ids:list': 'doc-a-renamed',
+                          }).find('Rename All').click()
         statusmessages.assert_no_error_messages()
         self.assertEquals(self.folder_a.absolute_url() + '/doc-a-renamed',
                           browser.url)
@@ -173,8 +182,11 @@ class TestCorrectPermissions(FunctionalTestCase):
         """
         browser.login(self.user_a).open(self.doc_b)
         browser.find('Rename').click()
-        browser.fill({'new_ids:list': 'doc-b-renamed',
-                      }).find('Rename All').click()
+        if IS_PLONE_5_OR_GREATER:
+            browser.fill({'New Short Name': 'doc-b-renamed'}).find('Rename').click()
+        else:
+            browser.fill({'new_ids:list': 'doc-b-renamed',
+                          }).find('Rename All').click()
         statusmessages.assert_no_error_messages()
         self.assertEquals(self.folder_a.absolute_url() + '/doc-b-renamed',
                           browser.url)
