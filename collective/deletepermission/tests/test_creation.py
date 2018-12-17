@@ -1,3 +1,4 @@
+from collective.deletepermission.testing import IS_PLONE_5_OR_GREATER
 from collective.deletepermission.tests.base import duplicate_with_dexterity
 from collective.deletepermission.tests.base import FunctionalTestCase
 from ftw.builder import Builder
@@ -22,4 +23,7 @@ class TestFactoryPatch(FunctionalTestCase):
         factoriesmenu.add(self.folder_name)
         browser.fill({'Title': 'Foo'}).save()
         statusmessages.assert_no_error_messages()
-        self.assertEquals('folder_listing', plone.view())
+        if IS_PLONE_5_OR_GREATER:
+            self.assertEquals('listing_view', plone.view())
+        else:
+            self.assertEquals('folder_listing', plone.view())

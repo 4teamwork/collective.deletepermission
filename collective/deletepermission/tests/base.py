@@ -62,6 +62,13 @@ class FunctionalTestCase(TestCase):
 def duplicate_with_dexterity(klass):
     """Decorator for duplicating a test suite to be ran against dexterity contents.
     """
+
+    if IS_PLONE_5_OR_GREATER:
+         # The default types (Folder etc.) in Plone 5 are already Dexterity.
+         # So we do not test Archetypes under Plone 5 anymore, thus we do not
+         # need to duplicate the tests.
+         return klass
+
     class DexterityTestSuite(klass):
         folder_name = 'dxfolder'
 
