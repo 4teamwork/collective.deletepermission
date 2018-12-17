@@ -10,6 +10,8 @@ from unittest2 import TestCase
 import sys
 import transaction
 
+from collective.deletepermission.testing import IS_PLONE_5_OR_GREATER
+
 
 class FunctionalTestCase(TestCase):
 
@@ -33,7 +35,10 @@ class FunctionalTestCase(TestCase):
         return messages
 
     def get_actions(self):
-        return browser.css('#plone-contentmenu-actions .actionMenuContent a').text
+        if IS_PLONE_5_OR_GREATER:
+            return browser.css('#plone-contentmenu-actions .plonetoolbar-content-action a').text
+        else:
+            return browser.css('#plone-contentmenu-actions .actionMenuContent a').text
 
     @contextmanager
     def user(self, username):
