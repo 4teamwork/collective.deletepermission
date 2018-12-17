@@ -3,7 +3,7 @@ from AccessControl.SecurityManagement import setSecurityManager
 from collective.deletepermission import testing
 from contextlib import contextmanager
 from ftw.builder import Builder
-from ftw.testbrowser import browser
+from ftw.testbrowser.pages import editbar
 from plone.app.testing import login
 from unittest2 import TestCase
 import sys
@@ -28,10 +28,7 @@ class FunctionalTestCase(TestCase):
         transaction.commit()
 
     def get_actions(self):
-        if testing.IS_PLONE_5_OR_GREATER:
-            return browser.css('#plone-contentmenu-actions .plonetoolbar-content-action a').text
-        else:
-            return browser.css('#plone-contentmenu-actions .actionMenuContent a').text
+        return editbar.menu_options("Actions")
 
     @contextmanager
     def user(self, username):
