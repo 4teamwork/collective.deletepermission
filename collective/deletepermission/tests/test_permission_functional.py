@@ -113,9 +113,13 @@ class TestCorrectPermissions(FunctionalTestCase):
         """
         browser.login(self.user_b).open(self.folder_a)
         self.assertNotIn('Cut', self.get_actions())
-        browser.open(self.folder_a, view='object_cut')
-        self.assertEquals(['folder-a is not moveable.'],
-                          statusmessages.error_messages())
+        if IS_PLONE_5_OR_GREATER:
+            with browser.expect_unauthorized():
+                browser.open(self.folder_a, view='object_cut')
+        else:
+            browser.open(self.folder_a, view='object_cut')
+            self.assertEquals(['folder-a is not moveable.'],
+                              statusmessages.error_messages())
 
     @browsing
     def test_userb_rename_folder(self, browser):
@@ -207,9 +211,13 @@ class TestCorrectPermissions(FunctionalTestCase):
         """
         browser.login(self.user_b).open(self.doc_a)
         self.assertNotIn('Cut', self.get_actions())
-        browser.open(self.doc_a, view='object_cut')
-        self.assertEquals(['doc-a is not moveable.'],
-                          statusmessages.error_messages())
+        if IS_PLONE_5_OR_GREATER:
+            with browser.expect_unauthorized():
+                browser.open(self.doc_a, view='object_cut')
+        else:
+            browser.open(self.doc_a, view='object_cut')
+            self.assertEquals(['doc-a is not moveable.'],
+                              statusmessages.error_messages())
 
     @browsing
     def test_userb_rename_doc_a(self, browser):
