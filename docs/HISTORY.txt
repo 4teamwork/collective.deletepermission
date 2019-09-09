@@ -4,6 +4,7 @@ Changelog
 1.4.1 (unreleased)
 ------------------
 
+- Add Plone 5.1 support. [mbaechtold]
 - Drop Plone 4.1 support. [jone]
 
 
