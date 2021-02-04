@@ -9,7 +9,6 @@ from App.Dialogs import MessageDialog
 from cgi import escape
 from OFS.CopySupport import absattr
 from OFS.CopySupport import CopyError
-from OFS.CopySupport import eNotSupported
 from OFS.event import ObjectWillBeMovedEvent
 from webdav.Lockable import ResourceLockedError
 from ZODB.POSException import ConflictError
@@ -53,7 +52,7 @@ def manage_renameObject(self, id, new_id, REQUEST=None):
         raise ResourceLockedError('Object "%s" is locked via WebDAV'
                                     % ob.getId())
     if not isRenameable(ob):
-        raise CopyError(eNotSupported % escape(id))
+        raise CopyError('Not Supported')
     self._verifyObjectPaste(ob)
 
     try:
