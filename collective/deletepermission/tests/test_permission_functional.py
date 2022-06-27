@@ -1,12 +1,9 @@
 from collective.deletepermission.testing import IS_PLONE_5_OR_GREATER
-from collective.deletepermission.tests.base import duplicate_with_dexterity
-from collective.deletepermission.tests.base import FunctionalTestCase
-from ftw.builder import Builder
-from ftw.builder import create
+from collective.deletepermission.tests.base import (FunctionalTestCase,
+                                                    duplicate_with_dexterity)
+from ftw.builder import Builder, create
 from ftw.testbrowser import browsing
-from ftw.testbrowser.pages import folder_contents
-from ftw.testbrowser.pages import plone
-from ftw.testbrowser.pages import statusmessages
+from ftw.testbrowser.pages import folder_contents, plone, statusmessages
 from unittest2 import skipIf
 
 

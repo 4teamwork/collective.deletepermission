@@ -1,13 +1,14 @@
-from AccessControl.SecurityManagement import getSecurityManager
-from AccessControl.SecurityManagement import setSecurityManager
-from collective.deletepermission import testing
+import sys
 from contextlib import contextmanager
+
+import transaction
+from AccessControl.SecurityManagement import (getSecurityManager,
+                                              setSecurityManager)
+from collective.deletepermission import testing
 from ftw.builder import Builder
 from ftw.testbrowser.pages import editbar
 from plone.app.testing import login
 from unittest2 import TestCase
-import sys
-import transaction
 
 
 class FunctionalTestCase(TestCase):

@@ -1,5 +1,5 @@
-from ftw.builder.dexterity import DexterityBuilder
 from ftw.builder import builder_registry
+from ftw.builder.dexterity import DexterityBuilder
 
 
 class DXFolderBuilder(DexterityBuilder):

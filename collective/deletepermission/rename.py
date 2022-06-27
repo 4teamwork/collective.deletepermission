@@ -1,15 +1,12 @@
 import sys
 import warnings
+from cgi import escape
+
 from AccessControl import getSecurityManager
 from AccessControl.Permissions import copy_or_move
-from Acquisition import aq_base
-from Acquisition import aq_inner
-from Acquisition import aq_parent
+from Acquisition import aq_base, aq_inner, aq_parent
 from App.Dialogs import MessageDialog
-from cgi import escape
-from OFS.CopySupport import absattr
-from OFS.CopySupport import CopyError
-from OFS.CopySupport import eNotSupported
+from OFS.CopySupport import CopyError, absattr, eNotSupported
 from OFS.event import ObjectWillBeMovedEvent
 from webdav.Lockable import ResourceLockedError
 from ZODB.POSException import ConflictError

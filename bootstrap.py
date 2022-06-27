@@ -22,7 +22,6 @@ import os
 import shutil
 import sys
 import tempfile
-
 from optparse import OptionParser
 
 tmpeggs = tempfile.mkdtemp()
@@ -72,7 +71,7 @@ try:
         import pkg_resources
     from urllib.request import urlopen
 except ImportError:
-    from urllib2 import urlopen
+    from six.moves.urllib.request import urlopen
 
 ez = {}
 exec(urlopen('https://bootstrap.pypa.io/ez_setup.py').read(), ez)
@@ -82,6 +81,7 @@ if not options.allow_site_packages:
     # this will remove them from the path to ensure that incompatible versions 
     # of setuptools are not in the path
     import site
+
     # inside a virtualenv, there is no 'getsitepackages'. 
     # We can't remove these reliably
     if hasattr(site, 'getsitepackages'):
@@ -90,8 +90,8 @@ if not options.allow_site_packages:
 
 setup_args = dict(to_dir=tmpeggs, download_delay=0)
 ez['use_setuptools'](**setup_args)
-import setuptools
 import pkg_resources
+import setuptools
 
 # This does not (always?) update the default working set.  We will
 # do it.
@@ -156,6 +156,7 @@ if version:
 cmd.append(requirement)
 
 import subprocess
+
 if subprocess.call(cmd, env=dict(os.environ, PYTHONPATH=setuptools_path)) != 0:
     raise Exception(
         "Failed to execute command:\n%s" % repr(cmd)[1:-1])

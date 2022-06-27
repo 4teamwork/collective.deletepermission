@@ -1,8 +1,7 @@
 from AccessControl import getSecurityManager
-from collective.deletepermission.tests.base import duplicate_with_dexterity
-from collective.deletepermission.tests.base import FunctionalTestCase
-from ftw.builder import Builder
-from ftw.builder import create
+from collective.deletepermission.tests.base import (FunctionalTestCase,
+                                                    duplicate_with_dexterity)
+from ftw.builder import Builder, create
 from zExceptions import Unauthorized
 
 

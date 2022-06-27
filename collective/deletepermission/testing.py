@@ -1,14 +1,10 @@
-from ftw.builder.testing import BUILDER_LAYER
-from ftw.builder.testing import functional_session_factory
-from ftw.builder.testing import set_builder_session_factory
-from plone.app.testing import applyProfile
-from plone.app.testing import FunctionalTesting
-from plone.app.testing import PLONE_FIXTURE
-from plone.app.testing import PloneSandboxLayer
-from plone.app.testing import setRoles, TEST_USER_ID, TEST_USER_NAME, login
-from pkg_resources import get_distribution
 import collective.deletepermission.tests.builders
-
+from ftw.builder.testing import (BUILDER_LAYER, functional_session_factory,
+                                 set_builder_session_factory)
+from pkg_resources import get_distribution
+from plone.app.testing import (PLONE_FIXTURE, TEST_USER_ID, TEST_USER_NAME,
+                               FunctionalTesting, PloneSandboxLayer,
+                               applyProfile, login, setRoles)
 
 IS_PLONE_5_OR_GREATER = get_distribution('Plone').version >= '5'
 
@@ -18,8 +14,8 @@ class CollectiveDeletepermissionLayer(PloneSandboxLayer):
     defaultBases = (PLONE_FIXTURE, BUILDER_LAYER)
 
     def setUpZope(self, app, configurationContext):
-        import plone.app.dexterity
         import collective.deletepermission
+        import plone.app.dexterity
         self.loadZCML(package=plone.app.dexterity)
         self.loadZCML(package=collective.deletepermission)
         self.loadZCML(package=collective.deletepermission.tests,
