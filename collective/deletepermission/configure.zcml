@@ -1,6 +1,5 @@
 <configure
     xmlns="http://namespaces.zope.org/zope"
-    xmlns:zcml="http://namespaces.zope.org/zcml"
     xmlns:five="http://namespaces.zope.org/five"
     xmlns:genericsetup="http://namespaces.zope.org/genericsetup"
     xmlns:i18n="http://namespaces.zope.org/i18n"
@@ -13,15 +12,7 @@
   <include package=".upgrades" />
   <include file="permissions.zcml" />
 
-  <monkey:patch
-      description="Patch manage_delObjects"
-      class="Products.Archetypes.BaseFolder.BaseFolderMixin"
-      original="manage_delObjects"
-      replacement="collective.deletepermission.del_object.manage_delObjects"
-      />
-
-  <configure
-    zcml:condition="installed plone.app.dexterity">
+  <configure>
       <monkey:patch
           description="Patch dexterity's manage_delObjects"
           class="plone.dexterity.content.Container"
@@ -37,15 +28,9 @@
       replacement="collective.deletepermission.cut_paste_object.cb_userHasCopyOrMovePermission"
       />
 
-  <monkey:patch
-      description="patch manage_cutObjects protection role."
-      class="Products.Archetypes.BaseFolder.BaseFolderMixin"
-      original="manage_cutObjects__roles__"
-      replacement=".cut_paste_object.dummy_replacement"
-      handler=".cut_paste_object.apply_delete_objects_permission_role"
-      />
 
-  <configure zcml:condition="installed plone.app.dexterity">
+
+  <configure>
       <monkey:patch
           description="Dexterity: patch manage_cutObjects protection role."
           class="plone.dexterity.content.Container"
@@ -55,15 +40,9 @@
           />
   </configure>
 
-  <monkey:patch
-      description="patch manage_pasteObjects protection role."
-      class="Products.Archetypes.BaseFolder.BaseFolderMixin"
-      original="manage_pasteObjects__roles__"
-      replacement=".cut_paste_object.dummy_replacement"
-      handler=".cut_paste_object.apply_delete_objects_permission_role"
-      />
+  
 
-  <configure zcml:condition="installed plone.app.dexterity">
+  <configure>
       <monkey:patch
           description="Dexterity: patch manage_pasteObjects protection role."
           class="plone.dexterity.content.Container"

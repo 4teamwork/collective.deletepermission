@@ -1,5 +1,7 @@
-from setuptools import setup, find_packages
 import os
+
+#just to check my push
+from setuptools import find_packages, setup
 
 version = '1.5.1.dev0'
 
@@ -38,7 +40,7 @@ long_description = (
 setup(name='collective.deletepermission',
       version=version,
       description="Implements a new permission 'Delete portal content'",
-      long_description=long_description.decode('utf-8'),
+      long_description=long_description,
 
       # Get more strings from
       # http://pypi.python.org/pypi?%3Aaction=list_classifiers
@@ -65,7 +67,6 @@ setup(name='collective.deletepermission',
       install_requires=[
         'AccessControl',
         'Acquisition',
-        'Products.Archetypes',
         'Products.CMFCore',
         'Products.CMFPlone',
         'Products.GenericSetup',

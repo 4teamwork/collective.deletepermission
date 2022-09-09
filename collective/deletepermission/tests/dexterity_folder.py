@@ -1,6 +1,5 @@
 from plone.autoform.interfaces import IFormFieldProvider
-from zope.interface import alsoProvides
-from zope.interface import Interface
+from zope.interface import Interface, alsoProvides
 
 
 class IDXFolder(Interface):

@@ -1,13 +1,10 @@
-from collective.deletepermission.testing import IS_PLONE_5_OR_GREATER
-from collective.deletepermission.tests.base import duplicate_with_dexterity
-from collective.deletepermission.tests.base import FunctionalTestCase
-from ftw.builder import Builder
-from ftw.builder import create
-from ftw.testbrowser import browsing
-from ftw.testbrowser.pages import factoriesmenu
-from ftw.testbrowser.pages import plone
-from ftw.testbrowser.pages import statusmessages
 import transaction
+from collective.deletepermission.testing import IS_PLONE_5_OR_GREATER
+from collective.deletepermission.tests.base import (FunctionalTestCase,
+                                                    duplicate_with_dexterity)
+from ftw.builder import Builder, create
+from ftw.testbrowser import browsing
+from ftw.testbrowser.pages import factoriesmenu, plone, statusmessages
 
 
 @duplicate_with_dexterity

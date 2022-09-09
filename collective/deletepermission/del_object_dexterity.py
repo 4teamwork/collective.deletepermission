@@ -1,5 +1,5 @@
-from plone.dexterity.content import Container
 from collective.deletepermission.del_object import protect_del_objects
+from plone.dexterity.content import Container
 
 
 def manage_delObjects(self, ids=None, REQUEST=None):

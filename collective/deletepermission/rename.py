@@ -1,17 +1,14 @@
 import sys
 import warnings
+from html import escape
+
 from AccessControl import getSecurityManager
 from AccessControl.Permissions import copy_or_move
-from Acquisition import aq_base
-from Acquisition import aq_inner
-from Acquisition import aq_parent
+from Acquisition import aq_base, aq_inner, aq_parent
 from App.Dialogs import MessageDialog
-from cgi import escape
-from OFS.CopySupport import absattr
-from OFS.CopySupport import CopyError
-from OFS.CopySupport import eNotSupported
+from OFS.CopySupport import CopyError, absattr#, eNotSupported
 from OFS.event import ObjectWillBeMovedEvent
-from webdav.Lockable import ResourceLockedError
+#from webdav.Lockable import ResourceLockedError
 from ZODB.POSException import ConflictError
 from zope.container.contained import notifyContainerModified
 from zope.event import notify
@@ -50,10 +47,11 @@ def manage_renameObject(self, id, new_id, REQUEST=None):
     ob = self._getOb(id)
 
     if ob.wl_isLocked():
-        raise ResourceLockedError('Object "%s" is locked via WebDAV'
-                                    % ob.getId())
+        raise Error('Object "%s" is locked via WebDAV'
+                                    % ob.getId()) 
+        '''ResourceLocked''' 
     if not isRenameable(ob):
-        raise CopyError(eNotSupported % escape(id))
+        raise CopyError('''eNotSupported''' % escape(id))
     self._verifyObjectPaste(ob)
 
     try:

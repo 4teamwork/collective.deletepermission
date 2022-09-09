@@ -1,5 +1,5 @@
-from AccessControl import Unauthorized
-from AccessControl import getSecurityManager
+import six
+from AccessControl import Unauthorized, getSecurityManager
 from Products.CMFCore.PortalFolder import PortalFolderBase as PortalFolder
 
 
@@ -11,7 +11,7 @@ def protect_del_objects(self, ids=None):
 
     if ids is None:
         ids = []
-    if isinstance(ids, basestring):
+    if isinstance(ids, six.string_types):
         ids = [ids]
     for id_ in ids:
         item = self._getOb(id_)

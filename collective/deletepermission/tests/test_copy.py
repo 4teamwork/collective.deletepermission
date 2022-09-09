@@ -1,14 +1,11 @@
 from collective.deletepermission.testing import IS_PLONE_5_OR_GREATER
-from collective.deletepermission.tests.base import duplicate_with_dexterity
-from collective.deletepermission.tests.base import FunctionalTestCase
+from collective.deletepermission.tests.base import (FunctionalTestCase,
+                                                    duplicate_with_dexterity)
 from ftw.builder import create
 from ftw.testbrowser import browsing
 from ftw.testbrowser.pages import statusmessages
 from plone import api
-from plone.app.testing import login
-from plone.app.testing import setRoles
-from plone.app.testing import TEST_USER_ID
-from plone.app.testing import TEST_USER_NAME
+from plone.app.testing import TEST_USER_ID, TEST_USER_NAME, login, setRoles
 
 
 @duplicate_with_dexterity
